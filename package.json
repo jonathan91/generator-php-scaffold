@@ -1,0 +1,48 @@
+{
+  "name": "generator-php-scaffold",
+  "version": "1.0.0",
+  "author": "Jonathan Monteiro <jonathan.monteiro6@gmail.com>",
+  "description": "This generator create a application with restful architecture with Zend 3 or Symfony framework",
+  "files": [
+    "app",
+    "router"
+  ],
+  "keywords": [
+    "scaffold",
+    "zend",
+    "restful",
+    "zend framework 3",
+    "symfony",
+    "command bus",
+    "zend framework",
+    "php",
+    "zf3"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonathan91/generator-php-scaffold.git"
+  },
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "yeoman-generator": "^3.1.1"
+  },
+  "devDependencies": {
+    "fs-extra": "2.1.2",
+    "gulp-mocha": "^6.0.0",
+    "mocha": "^5.2.0",
+    "mocha-sinon": "2.1.0",
+    "yeoman-test": "^1.9.0"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test/*"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jonathan91/generator-php-scaffold.git/issues"
+  },
+  "homepage": "https://github.com/jonathan91/generator-php-scaffold#readme",
+  "directories": {
+    "test": "test"
+  }
+}

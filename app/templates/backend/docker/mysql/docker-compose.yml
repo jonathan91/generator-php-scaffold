@@ -1,0 +1,26 @@
+version: '3.1'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:80
+    volumes:
+      - .:/var/www
+    restart: always
+  db:
+    image: mysql:5.7
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: <%=props.dbPassword%>
+      MYSQL_DATABASE: <%=props.dbName%>
+      MYSQL_USER: <%=props.dbUser%>
+    restart: always
+    ports:
+      - <%=props.dbPort%>:3306
+    volumes:
+      - /var/lib/mysql
+networks:
+  default:
+    driver: bridge

@@ -1,0 +1,46 @@
+# To get started with security, check out the documentation:
+# http://symfony.com/doc/current/book/security.html
+security:
+
+    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+    providers:
+        app:
+            entity:
+                class: AppBundle:Usuario
+                property: usuario
+
+    encoders:
+        AppBundle\Entity\Usuario:
+            algorithm: bcrypt
+            cost: 12
+
+    firewalls:
+        #Remove authetication
+        dev:
+            pattern:  ^/
+            security: false
+        login:
+            pattern:   ^/api/login
+            stateless: true
+            anonymous: true
+            simple_form:
+                authenticator:            api_auth
+                check_path:               /api/login_check
+                success_handler:          lexik_jwt_authentication.handler.authentication_success
+                failure_handler:          lexik_jwt_authentication.handler.authentication_failure
+                require_previous_session: false
+        api:
+            pattern:   ^/api
+            stateless: true
+            lexik_jwt:
+                authorization_header:
+                    enabled: true
+                    prefix:  Bearer
+                    name:    Authorization
+                query_parameter:
+                    enabled: true
+                    name:    bearer
+
+    access_control:
+        - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }

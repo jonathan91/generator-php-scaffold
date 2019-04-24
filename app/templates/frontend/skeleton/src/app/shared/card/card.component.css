@@ -1,0 +1,37 @@
+.card-items-list{
+    width: 100%;
+    float: left;
+}
+.card-header-column-item {
+    float: left;
+    width: 20%;
+    color: gray;
+    font-weight: bold;
+    padding: 5px !important;
+    margin: 0px !important;
+}
+.card-body-column-item {
+    float: left;
+    width: 20%;
+    padding: 5px;
+    margin: 0px;
+    padding: 5px !important;
+    margin: 0px !important;
+}
+.card-action-column-item{
+    float: left;
+    width: 10%;
+    padding: 5px;
+    margin: 0px;
+    padding: 5px !important;
+    margin: 0px !important;
+    text-align: center;
+}
+.card-content-list {
+    width: 100%;
+    float: left;
+    border: solid 1px gray;
+    margin: 5px;
+    border-radius: 3px;
+    box-shadow: 1px 2px darkgrey;
+}

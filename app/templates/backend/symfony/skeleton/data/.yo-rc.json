@@ -1,0 +1,8 @@
+
+{
+  "generator-jhipster": {
+    "databaseType": "postgresql",
+    "devDatabaseType": "postgresql",
+    "prodDatabaseType": "postgresql"
+  }
+}

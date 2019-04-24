@@ -1,0 +1,36 @@
+<div class="card">
+    <div class="card-header card-header-primary">
+        <h4 class="card-title">{{title}}</h4>
+        <p class="card-category">{{category}}</p>
+    </div>
+    <div class="card-body table-responsive">
+        <div class="card-content-list" *ngFor="let items of value; let indexRow = index">
+            <div class="card-items-list">
+                <div class="card-action-column-item">
+                    #
+                </div>
+                <div *ngFor="let column of objectKeys(items)" class="card-header-column-item">
+                    {{column}}
+                </div>
+            </div>
+            <div class="card-items-list">
+                <div class="card-action-column-item"> 
+                    <button (click)="onClick('edit', $event, items)" mat-raised-button type="button" matTooltip="Edit" [matTooltipPosition]="'above'" class="btn btn-success btn-link btn-sm btn-just-icon">
+                        <i class="material-icons">edit</i>
+                    </button>
+                    <button (click)="onClick('view', $event, items)" mat-raised-button type="button" matTooltip="View" [matTooltipPosition]="'above'" class="btn btn-info btn-link btn-sm btn-just-icon">
+                        <i class="material-icons">find_in_page</i>
+                    </button>
+                    <button (click)="onClick('delete', $event, items)" mat-raised-button type="button" matTooltip="Delete" [matTooltipPosition]="'above'" class="btn btn-danger btn-link btn-sm btn-just-icon">
+                        <i class="material-icons">delete</i>
+                    </button>
+                    <ng-template #defaultButtons>
+                    </ng-template>
+                </div>
+                <div *ngFor="let key of objectKeys(items)" class="card-body-column-item">
+                    {{items[key]}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

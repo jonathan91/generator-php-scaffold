@@ -1,0 +1,31 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-primary">
+                        <h4 class="card-title">{{ <%= _.toLower(className) %>.id ? 'Edit <%= className %>' : 'Create <%= className %>' }}</h4>
+                        <p class="card-category">Fill Form</p>
+                    </div>
+                    <div class="card-body">
+                        <form name="<%= _.toLower(className) %>Form" role="form" novalidate (ngSubmit)="save()" #<%= _.toLower(className) %>Form="ngForm">
+                            <input type="hidden" name="id" pInputText [(ngModel)]="<%= _.toLower(className) %>.id" readonly/>
+                            <div class="row">
+                              <% attributs.fields.forEach(function(element){ %>
+                              <div class="col-md-4">
+                                  <mat-form-field class="example-full-width">
+                                      <input matInput placeholder="<%= _.upperFirst(element.fieldName) %>" [(ngModel)]="<%= _.toLower(className) %>.<%= element.fieldName %>" name="<%= element.fieldName %>" type="text">
+                                  </mat-form-field>
+                              </div>
+                              <% }); %>
+                            </div>
+                            <button mat-raised-button type="button" class="btn btn-warning pull-right" routerLink="/<%= _.toLower(className) %>">Cancel</button>
+                            <button mat-raised-button type="submit" class="btn btn-success pull-right" [disabled]="<%= _.toLower(className) %>Form.form.invalid || isSaving">Save</button>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
