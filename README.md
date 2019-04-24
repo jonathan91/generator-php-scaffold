@@ -1,5 +1,17 @@
-# Name
- * PHP Scaffold 
+# Project
+This project is a code generator for the Zend Framework or Symfony, to generate the project skeleton the Resful architecture was used and the following packages are used to create the backend:
+* zend framework / Symfony
+* link / oauth2-client 2.3
+* lcobucci / jwt 3.2
+* doctrine / doctrine-module-0,10
+* doctrine / doctrine-module 1.1
+
+In creating the frontend was used Angular 5 together as the Material Design the link to the layout can be found here:
+* https://www.creative-tim.com/product/material-dashboard-angular2  
+
+# What the `php-scaffold` do?
+When started the `php-scaffold` generator suggests creating a project or pointing to an existing project, after that you can create your `Modules` and their `Entities`, and all the necessary files for the application to work will be created as based on the data provided.
+
 ## Instalation
 You need to install Yeoman and the generator.
 Yeoman and generator installation is required with the following commands:
