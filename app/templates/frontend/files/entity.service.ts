@@ -16,7 +16,7 @@ export class <%= className %>Service {
   constructor(private http: HttpClient) { }
 
   create(<%= _.toLower(className) %>: <%= className %>): Observable<<%= className %>> {
-    return this.http.post(this.resourceUrl, pessoa).pipe(
+    return this.http.post(this.resourceUrl, <%= _.toLower(className) %>).pipe(
       map((response: Response) => {
         return this.convertItemFromServer(response);
       })
@@ -24,7 +24,7 @@ export class <%= className %>Service {
   }
 
   update(<%= _.toLower(className) %>: <%= className %>): Observable<<%= className %>> {
-    return this.http.put(`${this.resourceUrl}/${<%= _.toLower(className) %>.id}`, pessoa).pipe(
+    return this.http.put(`${this.resourceUrl}/${<%= _.toLower(className) %>.id}`, <%= _.toLower(className) %>).pipe(
       map((response: Response) => {
         return this.convertItemFromServer(response);
       })
