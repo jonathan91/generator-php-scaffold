@@ -67,7 +67,7 @@ module.exports = class extends Generator {
                         name: 'Boolean'
                     },
                     {
-                        value: 'text',
+                        value: 'string',
                         name: 'Text'
                     },
                     {
@@ -399,7 +399,7 @@ module.exports = class extends Generator {
     {
         if(fs.existsSync('config/.yo-rc.json')){
             this.writeBackendZend(props);
-            this.writeConfigServiceZend(props);
+            this.writeConfigServiceZend(answers[0], answers[1]);
         } else{
             this.writeBackendSymfony(props);
             this.writeConfigServiceSymfony(answers[0], answers[1]);
@@ -713,21 +713,21 @@ module.exports = class extends Generator {
     },this);
     }
 
-    writeConfigServiceZend(values) 
+    writeConfigServiceZend(module, entity) 
     {
         this.writeFile(
             'backend/zend/files/Module.php',
-            'module/' + values[0] + '/src/Module.php',
-            values[0],
-            values[1],
+            'module/' + module + '/src/Module.php',
+            module,
+            entity,
             {}
         );
 
         this.writeFile(
             'backend/zend/files/module.config.php',
-            'module/' + values[0] + '/config/module.config.php',
-            values[0],
-            values[1],
+            'module/' + module + '/config/module.config.php',
+            module,
+            entity,
             {}
         );
 
@@ -736,7 +736,7 @@ module.exports = class extends Generator {
             file: 'modules.config.php',
             needle: 'module-name-mapper',
             splicable: [
-            `'${values[0]}',`
+            `'${module}',`
             ]
         },this);
         
@@ -745,7 +745,7 @@ module.exports = class extends Generator {
             file: 'doctrine_orm.global.php',
             needle: 'entity-name-mapper',
             splicable: [
-                `getcwd() . "/module/${values[0]}/src/Entity",`
+                `getcwd() . "/module/${module}/src/Entity",`
             ]
         },this);
 
@@ -754,7 +754,7 @@ module.exports = class extends Generator {
             file: 'doctrine_orm.global.php',
             needle: 'namespace-name-mapper',
             splicable: [
-            `'${values[0]}\\Entity\\${values[1]}' => 'annotation_driver',`
+            `'${module}\\Entity\\${entity}' => 'annotation_driver',`
             ]
         },this);
 
@@ -763,7 +763,7 @@ module.exports = class extends Generator {
             file: 'composer.json',
             needle: `new-module-mapper`,
             splicable: [
-                `"${values[0]+'\\'}\\": "module/${values[0]}/src/",`
+                `"${module+'\\'}\\": "module/${module}/src/",`
             ]
         },this);
     }

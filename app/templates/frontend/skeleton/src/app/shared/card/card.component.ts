@@ -26,6 +26,12 @@ export class CardComponent implements OnInit {
 
   @Input()
   url: string;
+  
+  @Input()
+  link: string;
+
+  @Input()
+  showButton = true;
 
   @Input()
   entity: string;

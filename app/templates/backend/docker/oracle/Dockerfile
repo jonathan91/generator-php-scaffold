@@ -35,7 +35,7 @@ ADD docker/000-default.conf /etc/apache2/sites-available/000-default.conf
 
 RUN chown -R www-data:www-data /var/www/html
 
-CMD bash -c "composer install"
+#CMD bash -c "composer install"
 
 RUN a2enmod rewrite
 

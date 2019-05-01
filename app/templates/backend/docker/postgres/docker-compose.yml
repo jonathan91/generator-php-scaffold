@@ -16,7 +16,7 @@ services:
        - ./:/var/www/html
     restart: 'no'
   db:
-    image: postgres:9.6
+    image: postgres:11.2-alpine
     environment:
       POSTGRES_PASSWORD: <%=props.dbPassword%>
       POSTGRES_USER: <%=props.dbUser%>

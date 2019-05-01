@@ -4,6 +4,9 @@
         <p class="card-category">{{category}}</p>
     </div>
     <div class="card-body table-responsive">
+        <div *ngIf="showButton">
+            <button mat-raised-button type="button" class="btn btn-primary pull-right" [routerLink]="[link]">Add</button>
+        </div>
         <div class="card-content-list" *ngFor="let items of value; let indexRow = index">
             <div class="card-items-list">
                 <div class="card-action-column-item">

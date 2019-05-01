@@ -6,7 +6,7 @@ This project is a code generator for the Zend Framework or Symfony, to generate 
 * doctrine / doctrine-module-0,10
 * doctrine / doctrine-module 1.1
 
-In creating the frontend was used Angular 5 together as the Material Design the link to the layout can be found here:
+In creating the frontend was used Angular 7 together as the Material Design the link to the layout can be found here:
 * https://www.creative-tim.com/product/material-dashboard-angular2  
 
 # What the `php-scaffold` do?
@@ -33,9 +33,11 @@ yo php-scaffold
 ```
 
 After the construction of the application structure for the creation of entities simply access the folder defined for the project and rerun the call to the generator.
+
 ```
 cd ~/Documents/proects/my_project
-
+```
+```
 yo php-scaffold
 ```
 
@@ -43,16 +45,24 @@ To Run the application yo need to execute the line command following.
 
 ```
 sudo docker-compose up -d
-
+```
+```
 sudo docker ps -a
-
 ```
 Get the container id and runner the following line command to update the database
 
 ```
 sudo docker exec -it <container-id> bash
+```
 
-php bin/console doctrine:schema:update --force
+```
+vendor/bin/doctrine orm:schema-tool:update --force
+```
+
+>Obs. To import the jdl files you need first convert to JSON file
+
+```
+jhipster import-jdl ./data/my-jdl-file.jdl --json-only
 ```
 
 ## Project Structure
@@ -141,6 +151,8 @@ The following project structures will be assembled according to the technologies
 |--client
 |--data
     |--json-files
+    |--README.md
+|--database
     |--README.md
 |--src
     |--AppBundle
