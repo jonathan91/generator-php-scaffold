@@ -1,7 +1,7 @@
 # Project
 This project is a code generator for the Zend Framework or Symfony, to generate the project skeleton the Resful architecture was used and the following packages are used to create the backend:
 * zend framework / Symfony
-* link / oauth2-client 2.3
+* league / oauth2-client 2.3
 * lcobucci / jwt 3.2
 * doctrine / doctrine-module-0,10
 * doctrine / doctrine-module 1.1
@@ -30,6 +30,29 @@ cd ~/home/Documents/my_projects
 To start the generator execution the following command must be executed.
 ```
 yo php-scaffold
+```
+
+After the construction of the application structure for the creation of entities simply access the folder defined for the project and rerun the call to the generator.
+```
+cd ~/Documents/proects/my_project
+
+yo php-scaffold
+```
+
+To Run the application yo need to execute the line command following.
+
+```
+sudo docker-compose up -d
+
+sudo docker ps -a
+
+```
+Get the container id and runner the following line command to update the database
+
+```
+sudo docker exec -it <container-id> bash
+
+php bin/console doctrine:schema:update --force
 ```
 
 ## Project Structure
@@ -164,11 +187,4 @@ The following project structures will be assembled according to the technologies
 |--composer.json
 |--composer.lock
 |--phpunit.xml
-```
-After the construction of the application structure for the creation of entities simply access the folder defined for the project and rerun the call to the generator.
-Example:
-```
-cd ~/Documents/proects/my_project
-
-yo php-scaffold
 ```

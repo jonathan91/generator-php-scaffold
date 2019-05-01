@@ -321,7 +321,8 @@ module.exports = class extends Generator {
                     entity: answers.bundleName+'.'+answers.className,
                     fields: []
                 };
-                this.askForField.call(this);            }else{  
+                this.askForField.call(this);
+            } else {  
                 var store = memFs.create();
                 var fsr = editor.create(store);
                 var listFiles = fs.readdirSync(answers.pathName);
@@ -647,6 +648,15 @@ module.exports = class extends Generator {
             needle: 'needle-add-router',
             splicable: [
                 `{ path: '${_.toLower(entity)}', loadChildren: '../../${_.toLower(entity)}/${_.toLower(entity)}.module#${entity}Module' },`
+            ]
+        },this);
+
+        util.rewriteFile({
+            path: 'client/src/app/components/sidebar/',
+            file: 'sidebar.component.ts',
+            needle: 'needle-menu-item',
+            splicable: [
+                `{ path: '/${_.toLower(entity)}', title: '${_.upperFirst(entity)}',  icon: 'bookmark', class: '' },`
             ]
         },this);
     }

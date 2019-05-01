@@ -24,11 +24,10 @@ COPY . /var/www/html
 ADD docker/php.ini /usr/local/etc/php/conf.d/php-extras.ini
 ADD docker/000-default.conf /etc/apache2/sites-available/000-default.conf
 
-RUN chown -R www-data:www-data var \
-    && composer install
+RUN chown -R www-data:www-data /var/www/html
+
+CMD bash -c "composer install"
 
 RUN a2enmod rewrite
-
-RUN chown -R www-data:www-data var/cache var/logs var/sessions
 
 EXPOSE 80

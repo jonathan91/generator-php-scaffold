@@ -9,6 +9,12 @@ services:
     volumes:
       - .:/var/www/html
     restart: always
+  composer:
+    image: composer/composer:php7
+    command: install
+    volumes:
+       - ./:/var/www/html
+    restart: 'no'
   db:
     image: oracle
     environment:

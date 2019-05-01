@@ -9,6 +9,12 @@ services:
     volumes:
       - .:/var/www
     restart: always
+  composer:
+    image: composer/composer:php7
+    command: install
+    volumes:
+       - ./:/var/www/html
+    restart: 'no'
   db:
     image: mysql:5.7
     command: --default-authentication-plugin=mysql_native_password
@@ -20,7 +26,7 @@ services:
     ports:
       - <%=props.dbPort%>:3306
     volumes:
-      - /var/lib/mysql
+      - ./database/:/var/lib/mysql
 networks:
   default:
     driver: bridge
