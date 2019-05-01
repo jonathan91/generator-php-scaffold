@@ -62,6 +62,9 @@ vendor/bin/doctrine orm:schema-tool:update --force
 >Obs. To import the jdl files you need first convert to JSON file
 
 ```
+npm install -g generator-jhipster
+```
+```
 jhipster import-jdl ./data/my-jdl-file.jdl --json-only
 ```
 
