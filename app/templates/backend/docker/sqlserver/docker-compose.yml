@@ -7,7 +7,7 @@ services:
     ports:
       - 8080:80
     volumes:
-      - .:/var/www/html
+      - ./:/var/www/html
     restart: always
   composer:
     image: composer/composer:php7
@@ -24,7 +24,7 @@ services:
     ports:
        - <%=props.dbPort%>:1433
     volumes:
-      - /var/lib/postgresql
+      - ./database/:/var/lib/postgresql
     restart: always
 networks:
   default:

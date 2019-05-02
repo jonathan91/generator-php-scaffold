@@ -337,7 +337,6 @@ module.exports = class extends Generator {
                         this.writeBackendFiles(element, values);
                         this.writeFrontendFiles(element);
                     });
-                    this.writeFileService(values[0]);
                 }else{
                     console.log(chalk.red('Erro: The files path has not exist.'));
                 }

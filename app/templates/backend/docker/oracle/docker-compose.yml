@@ -7,7 +7,7 @@ services:
     ports:
       - 8080:80
     volumes:
-      - .:/var/www/html
+      - ./:/var/www/html
     restart: always
   composer:
     image: composer/composer:php7
@@ -23,7 +23,7 @@ services:
     ports:
       - <%=props.dbPort%>:1521
     volumes:
-      - /opt/oracle/oradata
+      - ./database/:/opt/oracle/oradata
 networks:
   default:
     driver: bridge
