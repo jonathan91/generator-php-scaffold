@@ -159,18 +159,23 @@ class GeneratorSymfony extends EntityPrompt {
     writeDockerConfig(props){
         //docker-compose
         if(props.dbType === 'PDOMySql'){
+            props.db = 'mysql';
             this.writeFileSkeleton('backend/docker/mysql/docker-compose.yml', props.appName+'/docker-compose.yml', {props: props});
             this.writeFileSkeleton('backend/docker/mysql/Dockerfile', props.appName+'/Dockerfile', {props: props});
         }else if(props.dbType === 'PDOPgSql'){
+            props.db = 'postgresql';
             this.writeFileSkeleton('backend/docker/postgres/docker-compose.yml', props.appName+'/docker-compose.yml', {props: props});
             this.writeFileSkeleton('backend/docker/postgres/Dockerfile', props.appName+'/Dockerfile', {props: props});
         }else if(props.dbType === 'PDOSqlsrv'){
+            props.db = 'mssql';
             this.writeFileSkeleton('backend/docker/sqlserver/docker-compose.yml', props.appName+'/docker-compose.yml', {props: props});
             this.writeFileSkeleton('backend/docker/sqlserver/Dockerfile', props.appName+'/Dockerfile', {props: props});
         }else {
+            props.db = 'oracle';
             this.writeFileSkeleton('backend/docker/oracle/docker-compose.yml', props.appName+'/docker-compose.yml', {props: props});
             this.writeFileSkeleton('backend/docker/oracle/Dockerfile', props.appName+'/Dockerfile', {props: props});
         }
+        this.writeFileSkeleton('backend/docker/.yo-rc.json', props.appName+'/data/.yo-rc.json', {props: props});
     }
 
     writeFileSkeleton(to, from, params)

@@ -1,0 +1,8 @@
+
+{
+  "generator-jhipster": {
+    "databaseType": "<%=props.db%>",
+    "devDatabaseType": "<%=props.db%>",
+    "prodDatabaseType": "<%=props.db%>"
+  }
+}
