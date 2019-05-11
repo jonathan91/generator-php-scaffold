@@ -7,14 +7,8 @@ services:
     ports:
       - 8080:80
     volumes:
-      - ./:/var/www/html
+      - ./:/var/www/application
     restart: always
-  composer:
-    image: composer/composer:php7
-    command: install
-    volumes:
-       - ./:/var/www/html
-    restart: 'no'
   db:
     image: postgres:9.6
     environment:
