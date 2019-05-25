@@ -1,6 +1,6 @@
 {
   "name": "generator-php-scaffold",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "author": "Jonathan Monteiro <jonathan.monteiro6@gmail.com>",
   "description": "This generator create a application with restful architecture with Zend 3 or Symfony framework",
   "files": [
