@@ -1,9 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CardService } from './card.service';
 import { ClickEvent } from './click.event';
-import { DialogContent } from '../dialog/dialog-content.component';
-import { MatDialog } from '@angular/material';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-card',

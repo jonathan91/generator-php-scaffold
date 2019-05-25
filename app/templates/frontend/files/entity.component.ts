@@ -16,7 +16,7 @@ export class <%= className %>Component implements OnInit, OnDestroy {
   @ViewChild(CardComponent)
   card: CardComponent;
 
-  searchUrl: string = this.<%= _.toLower(className) %>Service.searchUrl;
+  searchUrl: string = this.<%= _.toLower(className) %>Service.resourceUrl;
 
   constructor(
     private router: Router,

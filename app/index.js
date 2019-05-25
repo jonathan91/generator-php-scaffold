@@ -126,9 +126,10 @@ class GeneratorSymfony extends EntityPrompt {
             this.writeDockerConfig(props);
             this.writeFileSkeleton('backend/symfony/skeleton', props.appName, {props: props});
             this.writeFileSkeleton('frontend/skeleton', props.appName+'/client', {props: props});
-            this.writeFileSkeleton('backend/symfony/skeleton/data/.yo-rc.json', props.appName+'/data/.yo-rc.json', {});
             this.writeFileSkeleton('backend/symfony/files/parameters.yml', props.appName+'/app/config/parameters.yml', {props: props, _: _});
             this.writeFileSkeleton('backend/symfony/files/parameters.yml', props.appName+'/app/config/parameters.yml.dist', {props: props, _: _});
+            props.appType = 'symfony';
+            this.writeFileSkeleton('backend/docker/.yo-rc.json', props.appName+'/database/.yo-rc.json', {props: props});
             this.writeFileSkeleton('backend/.yo-rc.json', props.appName+'/app/config/.yo-rc.json', {props: props});
             //this.spawnCommandSync('mkdir', ['-p', props.frontendRoot]);
             console.log('\n Now you need follow the steps for de run your application symfony');
@@ -147,6 +148,8 @@ class GeneratorSymfony extends EntityPrompt {
             this.writeFileSkeleton('frontend/skeleton', props.appName+'/client', {props: props});
             this.writeFileSkeleton('backend/zend/skeleton/config/autoload/doctrine_orm.global.php', props.appName+'/config/autoload/doctrine_orm.global.php', {props: props});
             this.writeFileSkeleton('backend/zend/files/_.htaccess', props.appName+'/public/.htaccess', {props: props});
+            this.writeFileSkeleton('backend/docker/.yo-rc.json', props.appName+'/database/.yo-rc.json', {props: props});
+            props.appType = 'zend';
             this.writeFileSkeleton('backend/.yo-rc.json', props.appName+'/config/.yo-rc.json', {props: props});
             //this.spawnCommandSync('mkdir', ['-p', props.frontendRoot]);
             console.log('\n Now you need follow the steps for de run your application symfony');
