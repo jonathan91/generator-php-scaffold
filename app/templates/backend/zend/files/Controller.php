@@ -19,7 +19,7 @@ class <%= className %>Controller extends AppAbstractController
 
     public function update($id, $request)
     {
-		$entity = new <%= className %>($request);
+			$entity = new <%= className %>($request);
     	$entity->setId($id);
     	$entity = $this->getServiceManager()->edit($entity);
     	$response = new AppHttpResponse($entity);

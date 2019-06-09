@@ -2,6 +2,7 @@
 namespace <%= packageName %>\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Application\Repository\AppInterfaceRepository;
 
 class <%= className %>Repository  extends EntityRepository implements AppInterfaceRepository
@@ -23,6 +24,10 @@ class <%= className %>Repository  extends EntityRepository implements AppInterfa
 		}
 
 		$query->setFirstResult($offset);
-		return $query->getQuery()->getResult();
+		$query->setMaxResults(10);
+		$paginator = new Paginator($query);
+		$result['data'] = $paginator->getIterator();
+		$result['total'] = $paginator->count();
+		return $result;
     }
 }
