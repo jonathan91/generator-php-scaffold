@@ -2,6 +2,7 @@
 namespace <%= packageName %>\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class <%= className %>Repository extends EntityRepository
 {
@@ -34,8 +35,11 @@ class <%= className %>Repository extends EntityRepository
 			$query->orderBy("tbl.{$sort}", $order);
 		}
 		$query->setFirstResult($offset);
-		
-		return $query->getQuery()->getResult();
+		$query->setMaxResults(10);
+		$paginator = new Paginator($query);
+		$result['data'] = $paginator->getIterator();
+		$result['total'] = $paginator->count();
+		return $result;
     }
     /*
     * The duplication rules are changed with the use case rules

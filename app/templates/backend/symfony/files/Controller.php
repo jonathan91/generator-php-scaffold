@@ -27,7 +27,13 @@ class <%= className %>Controller extends AbstractApiController
     {
         $service = $this->get($this->query);
         $search = $service->search($request->query);
-        return new Response(json_encode($search), Response::HTTP_OK, ['X-Total-Count'=>count($search)]);
+        return new Response(
+            json_encode($search['data']), 
+            Response::HTTP_OK, 
+            [
+                'X-Total-Count'=>$search['total']
+            ]
+        );
     }
 
     public function getAction($id)
