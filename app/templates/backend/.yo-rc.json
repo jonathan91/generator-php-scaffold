@@ -1,4 +1,0 @@
-{
-  "frontend_dir": "<%= props.frontendRoot %>",
-  "application_type": "<%= props.appType %>",
-}

@@ -2,6 +2,7 @@
 var EntityPrompt = require('./entity/prompts');
 const chalk = require('chalk');
 const _ = require('lodash');
+const fs = require('fs');
 
 class GeneratorSymfony extends EntityPrompt {
 
@@ -123,14 +124,12 @@ class GeneratorSymfony extends EntityPrompt {
     {
         var fs = require('fs');
         if (!fs.existsSync(props.appName)) {
+            props.appType = 'symfony';
             this.writeDockerConfig(props);
             this.writeFileSkeleton('backend/symfony/skeleton', props.appName, {props: props});
             this.writeFileSkeleton('frontend/skeleton', props.appName+'/client', {props: props});
             this.writeFileSkeleton('backend/symfony/files/parameters.yml', props.appName+'/app/config/parameters.yml', {props: props, _: _});
             this.writeFileSkeleton('backend/symfony/files/parameters.yml', props.appName+'/app/config/parameters.yml.dist', {props: props, _: _});
-            props.appType = 'symfony';
-            this.writeFileSkeleton('backend/docker/.yo-rc.json', props.appName+'/database/.yo-rc.json', {props: props});
-            this.writeFileSkeleton('backend/.yo-rc.json', props.appName+'/app/config/.yo-rc.json', {props: props});
             //this.spawnCommandSync('mkdir', ['-p', props.frontendRoot]);
             console.log('\n Now you need follow the steps for de run your application symfony');
             console.log('\n Step - 1: Entry into the directory '+props.appName+' with command '+chalk.blue('cd '+props.appName));
@@ -143,14 +142,12 @@ class GeneratorSymfony extends EntityPrompt {
     {
         var fs = require('fs');
         if (!fs.existsSync(props.appName)) {
+            props.appType = 'zend';
             this.writeDockerConfig(props);
             this.writeFileSkeleton('backend/zend/skeleton', props.appName, {props: props});
             this.writeFileSkeleton('frontend/skeleton', props.appName+'/client', {props: props});
             this.writeFileSkeleton('backend/zend/skeleton/config/autoload/doctrine_orm.global.php', props.appName+'/config/autoload/doctrine_orm.global.php', {props: props});
             this.writeFileSkeleton('backend/zend/files/_.htaccess', props.appName+'/public/.htaccess', {props: props});
-            this.writeFileSkeleton('backend/docker/.yo-rc.json', props.appName+'/database/.yo-rc.json', {props: props});
-            props.appType = 'zend';
-            this.writeFileSkeleton('backend/.yo-rc.json', props.appName+'/config/.yo-rc.json', {props: props});
             //this.spawnCommandSync('mkdir', ['-p', props.frontendRoot]);
             console.log('\n Now you need follow the steps for de run your application symfony');
             console.log('\n Step - 1: Entry into the directory '+props.appName+' with command '+chalk.blue('cd '+props.appName));
@@ -178,7 +175,7 @@ class GeneratorSymfony extends EntityPrompt {
             this.writeFileSkeleton('backend/docker/oracle/docker-compose.yml', props.appName+'/docker-compose.yml', {props: props});
             this.writeFileSkeleton('backend/docker/oracle/Dockerfile', props.appName+'/Dockerfile', {props: props});
         }
-        this.writeFileSkeleton('backend/docker/.yo-rc.json', props.appName+'/data/.yo-rc.json', {props: props});
+        this.writeFileSkeleton('backend/docker/.yo-rc.json', props.appName+'/.yo-rc.json', {props: props});
     }
 
     writeFileSkeleton(to, from, params)

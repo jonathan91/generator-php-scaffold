@@ -4,5 +4,9 @@
     "databaseType": "<%=props.db%>",
     "devDatabaseType": "<%=props.db%>",
     "prodDatabaseType": "<%=props.db%>"
+  },
+  "config": {
+    "appFramework": "<%=props.appType%>",
+    "frontendDir": "client"
   }
 }

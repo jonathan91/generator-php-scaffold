@@ -396,13 +396,17 @@ module.exports = class extends Generator {
 
     writeBackendFiles(props, answers) 
     {
-        if(fs.existsSync('config/.yo-rc.json')){
-            this.writeBackendZend(props);
-            this.writeConfigServiceZend(answers[0], answers[1]);
-        } else{
-            this.writeBackendSymfony(props);
-            this.writeConfigServiceSymfony(answers[0], answers[1]);
-        }
+        const me = this;
+        fs.readFile('.yo-rc.json', 'utf-8', function(error, content){
+            let path = JSON.parse(content);
+            if (_.toUpper(path.appFramework) === 'ZEND') {
+                me.writeBackendZend(props);
+                me.writeConfigServiceZend(answers[0], answers[1]);
+            } else {
+                me.writeBackendSymfony(props);
+                me.writeConfigServiceSymfony(answers[0], answers[1]);
+            }
+        }); 
     }
 
     writeBackendZend(props)
@@ -565,78 +569,83 @@ module.exports = class extends Generator {
     
     writeFrontendFiles(props) 
     {
-        var values = props.entity.split('.');
-        this.writeFile(
-            'frontend/files/entity-detail.component.html',
-            'client/src/app/'+ _.toLower(values[1]) + '/' +  _.toLower(values[1])+'-detail.component.html',
-            values[0],
-            values[1],
-            props
-        );
-        this.writeFile(
-            'frontend/files/entity-detail.component.ts',
-            'client/src/app/'+ _.toLower(values[1]) + '/' +  _.toLower(values[1])+'-detail.component.ts',
-            values[0],
-            values[1],
-            props
-        );
-        this.writeFile(
-            'frontend/files/entity-form.component.html',
-            'client/src/app/'+ _.toLower(values[1]) + '/' +  _.toLower(values[1])+'-form.component.html',
-            values[0],
-            values[1],
-            props
-        );
-        this.writeFile(
-            'frontend/files/entity-form.component.ts',
-            'client/src/app/'+ _.toLower(values[1]) + '/' +  _.toLower(values[1])+'-form.component.ts',
-            values[0],
-            values[1],
-            props
-        );
-        this.writeFile(
-            'frontend/files/entity.component.html',
-            'client/src/app/'+ _.toLower(values[1]) + '/' +  _.toLower(values[1])+'.component.html',
-            values[0],
-            values[1],
-            props
-        );
-        this.writeFile(
-            'frontend/files/entity.component.ts',
-            'client/src/app/'+ _.toLower(values[1]) + '/' +  _.toLower(values[1])+'.component.ts',
-            values[0],
-            values[1],
-            props
-        );
-        this.writeFile(
-            'frontend/files/entity.model.ts',
-            'client/src/app/'+ _.toLower(values[1]) + '/models/' +  _.toLower(values[1])+'.model.ts',
-            values[0],
-            values[1],
-            props
-        );
-        this.writeFile(
-            'frontend/files/entity.module.ts',
-            'client/src/app/'+ _.toLower(values[1]) + '/' +  _.toLower(values[1])+'.module.ts',
-            values[0],
-            values[1],
-            props
-        );
-        this.writeFile(
-            'frontend/files/entity.route.ts',
-            'client/src/app/'+ _.toLower(values[1]) + '/' +  _.toLower(values[1])+'.route.ts',
-            values[0],
-            values[1],
-            props
-        );
-        this.writeFile(
-            'frontend/files/entity.service.ts',
-            'client/src/app/'+ _.toLower(values[1]) + '/services/' +  _.toLower(values[1])+'.service.ts',
-            values[0],
-            values[1],
-            props
-        );
-        this.writeConfigFrontend(values[1]); 
+        const me = this;
+        fs.readFile('.yo-rc.json', 'utf-8', function(error, content){
+            let path = JSON.parse(content);
+            let config = path.config;
+            var values = props.entity.split('.');
+            me.writeFile(
+                'frontend/files/entity-detail.component.html',
+                config.frontendDir+'/src/app/'+ _.toLower(values[1]) + '/' +  _.toLower(values[1])+'-detail.component.html',
+                values[0],
+                values[1],
+                props
+            );
+            me.writeFile(
+                'frontend/files/entity-detail.component.ts',
+                config.frontendDir+'/src/app/'+ _.toLower(values[1]) + '/' +  _.toLower(values[1])+'-detail.component.ts',
+                values[0],
+                values[1],
+                props
+            );
+            me.writeFile(
+                'frontend/files/entity-form.component.html',
+                config.frontendDir+'/src/app/'+ _.toLower(values[1]) + '/' +  _.toLower(values[1])+'-form.component.html',
+                values[0],
+                values[1],
+                props
+            );
+            me.writeFile(
+                'frontend/files/entity-form.component.ts',
+                config.frontendDir+'/src/app/'+ _.toLower(values[1]) + '/' +  _.toLower(values[1])+'-form.component.ts',
+                values[0],
+                values[1],
+                props
+            );
+            me.writeFile(
+                'frontend/files/entity.component.html',
+                config.frontendDir+'/src/app/'+ _.toLower(values[1]) + '/' +  _.toLower(values[1])+'.component.html',
+                values[0],
+                values[1],
+                props
+            );
+            me.writeFile(
+                'frontend/files/entity.component.ts',
+                config.frontendDir+'/src/app/'+ _.toLower(values[1]) + '/' +  _.toLower(values[1])+'.component.ts',
+                values[0],
+                values[1],
+                props
+            );
+            me.writeFile(
+                'frontend/files/entity.model.ts',
+                config.frontendDir+'/src/app/'+ _.toLower(values[1]) + '/models/' +  _.toLower(values[1])+'.model.ts',
+                values[0],
+                values[1],
+                props
+            );
+            me.writeFile(
+                'frontend/files/entity.module.ts',
+                config.frontendDir+'/src/app/'+ _.toLower(values[1]) + '/' +  _.toLower(values[1])+'.module.ts',
+                values[0],
+                values[1],
+                props
+            );
+            me.writeFile(
+                'frontend/files/entity.route.ts',
+                config.frontendDir+'/src/app/'+ _.toLower(values[1]) + '/' +  _.toLower(values[1])+'.route.ts',
+                values[0],
+                values[1],
+                props
+            );
+            me.writeFile(
+                'frontend/files/entity.service.ts',
+                config.frontendDir+'/src/app/'+ _.toLower(values[1]) + '/services/' +  _.toLower(values[1])+'.service.ts',
+                values[0],
+                values[1],
+                props
+            );
+            me.writeConfigFrontend(values[1]); 
+        });
     }
 
     writeConfigFrontend(entity)
