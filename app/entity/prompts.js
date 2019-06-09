@@ -650,23 +650,28 @@ module.exports = class extends Generator {
 
     writeConfigFrontend(entity)
     {
-        util.rewriteFile({
-            path: 'client/src/app/layouts/admin-layout/',
-            file: 'admin-layout.routing.ts',
-            needle: 'needle-add-router',
-            splicable: [
-                `{ path: '${_.toLower(entity)}', loadChildren: '../../${_.toLower(entity)}/${_.toLower(entity)}.module#${entity}Module' },`
-            ]
-        },this);
+        const me = this;
+        fs.readFile('.yo-rc.json', 'utf-8', function(error, content){
+            let path = JSON.parse(content);
+            let config = path.config;
+            util.rewriteFile({
+                path: config.frontendDir+'/src/app/layouts/admin-layout/',
+                file: 'admin-layout.routing.ts',
+                needle: 'needle-add-router',
+                splicable: [
+                    `{ path: '${_.toLower(entity)}', loadChildren: '../../${_.toLower(entity)}/${_.toLower(entity)}.module#${entity}Module' },`
+                ]
+            }, me);
 
-        util.rewriteFile({
-            path: 'client/src/app/components/sidebar/',
-            file: 'sidebar.component.ts',
-            needle: 'needle-menu-item',
-            splicable: [
-                `{ path: '/${_.toLower(entity)}', title: '${_.upperFirst(entity)}',  icon: 'bookmark', class: '' },`
-            ]
-        },this);
+            util.rewriteFile({
+                path: config.frontendDir+'/src/app/components/sidebar/',
+                file: 'sidebar.component.ts',
+                needle: 'needle-menu-item',
+                splicable: [
+                    `{ path: '/${_.toLower(entity)}', title: '${_.upperFirst(entity)}',  icon: 'bookmark', class: '' },`
+                ]
+            }, me);
+        });
     }
 
     writeFile(origin, destination, bundle, entity, props) 
