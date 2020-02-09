@@ -1,38 +1,36 @@
 <?php
 declare(strict_types = 1);
 
-namespace <%= packageName %>\Service\Handler\<%= className %>;
+namespace App\Service\Handler\<%= className %>;
 
-use Doctrine\ORM\EntityManager;
-use <%= packageName %>\Exception\NotFoundException;
-use <%= packageName %>\Entity\<%= className %>;
-use <%= packageName %>\Service\Command\<%= className %>\Put<%= className %>Command;
+use App\Service\Command\AbstractCommand;
+use App\Service\Handler\AbstractHandler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class Put<%= className %>Handler
+class PutHandler extends AbstractHandler
 {
     /**
-     * @var EntityManager
+     *
+     * {@inheritdoc}
+     * @see \App\Service\Handler\AbstractHandler::handle()
      */
-    protected $em;
-
-    public function __construct(EntityManager $em)
-    {
-        $this->em = $em;
-    }
-
-    public function handle(Put<%= className %>Command $command): <%= className %>
+    public function handle(AbstractCommand $command)
     {   
-        $entity = $this->em->getRepository('<%= packageName %>:<%= className %>')->findDuplicated($command->id);
-        if ($entity && $entity[0]['id'] != (int)$command->id) {
-            throw new \Exception('The record already exist!');
+        $entity = $this->em->getRepository('App:<%= className %>')->find($command->id);
+        if (empty($entity)) {
+            throw new NotFoundHttpException("The id {$command->id} record not found");
         }
-        $entity = $this->em->find('<%= packageName %>:<%= className %>', $command->id);
-        if (!$entity) {
-            throw new NotFoundException('Record not found!');
+        $entity->setValues([
+            <% attributs.fields.forEach(function(element, index, elements){ %>'<%= element.fieldName %>'=>$command-><%= element.fieldName %><% if (index !== elements.length - 1){ %>,
+            <% }}); %>
+        ]);
+        $error = $this->validator->validate($entity);
+        if (count($error) == 0) {
+            $this->em->persist($entity);
+            $this->em->flush();
+            return $entity;
         }
-        <% attributs.fields.forEach(function(element, index, elements){ %>$entity->set<%= _.upperFirst(_.camelCase(element.fieldName)) %>($command-><%= element.fieldName %>);
-        <% }); %>
-        $this->em->persist($entity);
-        return $entity;
+        return $error;
+    }
     }
 }

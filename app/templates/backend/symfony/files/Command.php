@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace <%= packageName %>\Service\Command\<%= className %>;
+namespace App\Service\Command\<%= className %>;
 
 use Symfony\Component\Validator\Constraints as Assert;<% attributs.fields.forEach(function(element){ if (element.fieldType === 'class') { %>
 use <%= packageName %>\Entity\<%= element.otherEntityName %>;

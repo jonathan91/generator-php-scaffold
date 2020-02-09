@@ -1,14 +1,14 @@
 <?php
 declare(strict_types = 1);
 
-namespace <%= packageName %>\Entity;
+namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="<%= _.snakeCase(className).toLowerCase()%>")
- * @ORM\Entity(repositoryClass="<%= packageName %>\Repository\<%= className %>Repository")
+ * @ORM\Entity(repositoryClass="App\Repository\<%= className %>Repository")
  */
 class <%= className %> implements \JsonSerializable 
 {
@@ -26,7 +26,7 @@ class <%= className %> implements \JsonSerializable
     * @var <% if (element.fieldType !== 'class') { if (element.fieldType !== 'integer') { %><%= element.fieldType %> <% } else { %>int<% }} else { %>int<% } %>
     * @ORM\Column(name="<%= element.fieldName %>", type="<% if (element.fieldType !== 'class') { %><%= element.fieldType %>"<% } else { %>integer"<% } if (element.fieldValidateRules.includes('required')) { %>, nullable=true<% } if (element.fieldValidateRules.includes('unique')) { %>, unique=true<% } %>)
     * <% if (element.fieldType === 'class') { %>
-    * @ORM\<%= element.relationshipType %>(targetEntity="<%= packageName %>\Entity\<%= element.otherEntityName %>")
+    * @ORM\<%= element.relationshipType %>(targetEntity="App\Entity\<%= element.otherEntityName %>")
     * @ORM\JoinColumn(name="id", referencedColumnName="<%= _.snakeCase(element.fieldName) %>")
     * <% } if (element.fieldValidateRules.includes('pattern')) { %>
     * @Assert\Regex(
@@ -68,13 +68,4 @@ class <%= className %> implements \JsonSerializable
         return $this;
     }
     <% }); %>
-
-    public function jsonSerialize()
-    {
-    	return [
-            'id'=>$this->getId(),
-            <% attributs.fields.forEach(function(element){ %>'<%= _.camelCase(element.fieldName) %>'=>$this->get<%= _.upperFirst(_.camelCase(element.fieldName)) %>(),
-            <% }); %>
-    	];
-    }
 }

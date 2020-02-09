@@ -1,32 +1,29 @@
 <?php
 declare(strict_types = 1);
 
-namespace <%= packageName %>\Service\Handler\<%= className %>;
+namespace App\Service\Handler\<%= className %>;
 
-use Doctrine\ORM\EntityManager;
-use <%= packageName %>\Entity\<%= className %>;
-use <%= packageName %>\Exception\NotFoundException;
-use <%= packageName %>\Service\Command\<%= className %>\Delete<%= className %>Command;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use App\Service\Command\AbstractCommand;
+use App\Service\Handler\AbstractHandler;
 
-class Delete<%= className %>Handler
+class DeleteHandler extends AbstractHandler
 {
     /**
-     * @var EntityManager
+     *
+     * {@inheritdoc}
+     * @see \App\Service\Handler\AbstractHandler::handle()
      */
-    protected $em;
-
-    public function __construct(EntityManager $em)
+    public function handle(AbstractCommand $command)
     {
-        $this->em = $em;
-    }
-
-    public function handle(Delete<%= className %>Command $command): <%= className %>
-    {
-        $entity = $this->em->find('<%= packageName %>:<%= className %>', $command->id);
-        if (!$entity) {
-            throw new NotFoundException('Record not found!');
+        $entity = $this->em->getRepository('App:<%= className %>')->find($command->id);
+        if (empty($entity)) {
+            throw new NotFoundHttpException("The id {$command->id} record not found");
         }
         $this->em->remove($entity);
-        return $entity;
+        $this->em->flush();
+        return [
+            "Iten {$command->id} deleted with success."
+        ];
     }
 }

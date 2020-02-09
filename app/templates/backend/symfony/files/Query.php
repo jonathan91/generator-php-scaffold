@@ -1,13 +1,11 @@
 <?php
 declare(strict_types = 1); 
 
-namespace <%= packageName %>\Service\Query;
+namespace App\Service\Query;
 
 use Doctrine\ORM\EntityManager;
-use <%= packageName %>\Repository\<%= className %>Repository;
-use <%= packageName %>\Entity\<%= className %>;
 
-class <%= className %>Query
+class <%= className %>Query implements QueryInterface
 {
     /**
      * @var EntityManager
@@ -19,18 +17,18 @@ class <%= className %>Query
         $this->em = $em;
     }
 
-    protected function get<%= className %>Repository(): <%= className %>Repository
+    protected function getRepository()
     {
-        return $this->em->getRepository('<%= packageName %>:<%= className %>');
+        return $this->em->getRepository('App:<%= className %>');
     }
 
     public function search($parameters)
     {
-    	return $this->get<%= className %>Repository()->search($parameters->all());
+    	return $this->getRepository()->search($parameters);
     }
 
-    public function findById(int $id): <%= className %>
+    public function findById(int $id)
     {
-        return $this->get<%= className %>Repository()->find($id);
+        return $this->getRepository()->find($id);
     }
 }

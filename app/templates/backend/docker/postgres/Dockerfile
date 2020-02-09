@@ -27,8 +27,8 @@ ADD docker/000-default.conf /etc/apache2/sites-available/000-default.conf
 
 RUN chown -R www-data:www-data /var/www/application
 
-RUN cd /var/www/application && composer install
-
 RUN a2enmod rewrite
+
+RUN composer install
 
 EXPOSE 80
