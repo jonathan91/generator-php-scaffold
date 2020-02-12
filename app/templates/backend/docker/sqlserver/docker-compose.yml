@@ -7,7 +7,7 @@ services:
     ports:
       - 8080:80
     volumes:
-      - ./api:/var/www/application
+      - ./api:/var/www/api
     restart: always
   db:
     image: postgres:9.6
