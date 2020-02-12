@@ -2,12 +2,12 @@ version: '3.1'
 services:
   app:
     build:
-      context: .
+      context: ./api
       dockerfile: Dockerfile
     ports:
       - 8080:80
     volumes:
-      - ./:/var/www/application
+      - ./api:/var/www/application
     restart: always
   db:
     image: oracle

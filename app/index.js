@@ -123,13 +123,14 @@ class GeneratorSymfony extends EntityPrompt {
     createSkelotonApplitaionSymfony(props)
     {
         var fs = require('fs');
+        var apiPath = "/api";
         if (!fs.existsSync(props.appName)) {
             props.appType = 'symfony';
-            this.writeDockerConfig(props);
-            this.writeFileSkeleton('backend/symfony/skeleton', props.appName, {props: props});
-            this.writeFileSkeleton('frontend/skeleton', props.appName+'/client', {props: props});
-            this.writeFileSkeleton('backend/symfony/files/parameters.yml', props.appName+'/app/config/parameters.yml', {props: props, _: _});
-            this.writeFileSkeleton('backend/symfony/files/parameters.yml', props.appName+'/app/config/parameters.yml.dist', {props: props, _: _});
+
+            this.writeDockerConfig(props, apiPath);
+            this.writeFileSkeleton('backend/symfony/skeleton', props.appName+apiPath, {props: props});
+            //this.writeFileSkeleton('frontend/skeleton', props.appName+'/client', {props: props});
+            //this.writeFileSkeleton('backend/symfony/files/.env', props.appName+'/.env', {props: props, _: _});
             //this.spawnCommandSync('mkdir', ['-p', props.frontendRoot]);
             console.log('\n Now you need follow the steps for de run your application symfony');
             console.log('\n Step - 1: Entry into the directory '+props.appName+' with command '+chalk.blue('cd '+props.appName));
@@ -143,7 +144,7 @@ class GeneratorSymfony extends EntityPrompt {
         var fs = require('fs');
         if (!fs.existsSync(props.appName)) {
             props.appType = 'zend';
-            this.writeDockerConfig(props);
+            this.writeDockerConfig(props, "");
             this.writeFileSkeleton('backend/zend/skeleton', props.appName, {props: props});
             this.writeFileSkeleton('frontend/skeleton', props.appName+'/client', {props: props});
             this.writeFileSkeleton('backend/zend/skeleton/config/autoload/doctrine_orm.global.php', props.appName+'/config/autoload/doctrine_orm.global.php', {props: props});
@@ -156,24 +157,24 @@ class GeneratorSymfony extends EntityPrompt {
         }
     }
 
-    writeDockerConfig(props){
+    writeDockerConfig(props, apiPath){
         //docker-compose
         if(props.dbType === 'PDOMySql'){
             props.db = 'mysql';
             this.writeFileSkeleton('backend/docker/mysql/docker-compose.yml', props.appName+'/docker-compose.yml', {props: props});
-            this.writeFileSkeleton('backend/docker/mysql/Dockerfile', props.appName+'/Dockerfile', {props: props});
+            this.writeFileSkeleton('backend/docker/mysql/Dockerfile', props.appName+apiPath+'/Dockerfile', {props: props});
         }else if(props.dbType === 'PDOPgSql'){
             props.db = 'postgresql';
             this.writeFileSkeleton('backend/docker/postgres/docker-compose.yml', props.appName+'/docker-compose.yml', {props: props});
-            this.writeFileSkeleton('backend/docker/postgres/Dockerfile', props.appName+'/Dockerfile', {props: props});
+            this.writeFileSkeleton('backend/docker/postgres/Dockerfile', props.appName+apiPath+'/Dockerfile', {props: props});
         }else if(props.dbType === 'PDOSqlsrv'){
             props.db = 'mssql';
             this.writeFileSkeleton('backend/docker/sqlserver/docker-compose.yml', props.appName+'/docker-compose.yml', {props: props});
-            this.writeFileSkeleton('backend/docker/sqlserver/Dockerfile', props.appName+'/Dockerfile', {props: props});
+            this.writeFileSkeleton('backend/docker/sqlserver/Dockerfile', props.appName+apiPath+'/Dockerfile', {props: props});
         }else {
             props.db = 'oracle';
             this.writeFileSkeleton('backend/docker/oracle/docker-compose.yml', props.appName+'/docker-compose.yml', {props: props});
-            this.writeFileSkeleton('backend/docker/oracle/Dockerfile', props.appName+'/Dockerfile', {props: props});
+            this.writeFileSkeleton('backend/docker/oracle/Dockerfile', props.appName+apiPath+'/Dockerfile', {props: props});
         }
         this.writeFileSkeleton('backend/docker/.yo-rc.json', props.appName+'/.yo-rc.json', {props: props});
     }
