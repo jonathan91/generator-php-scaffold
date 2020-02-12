@@ -131,6 +131,7 @@ class GeneratorSymfony extends EntityPrompt {
             this.writeFileSkeleton('backend/symfony/skeleton', props.appName+apiPath, {props: props});
             this.writeFileSkeleton('frontend/skeleton', props.appName+'/client', {props: props});
             this.writeFileSkeleton('backend/symfony/files/.env', props.appName+apiPath+'/.env', {props: props, _: _});
+            this.writeFileSkeleton('backend/symfony/files/.env', props.appName+apiPath+'/.env.test', {props: props, _: _});
             this.writeFileSkeleton('backend/symfony/files/.htaccess', props.appName+apiPath+'/public/.htaccess', {props: props, _: _});
             //this.spawnCommandSync('mkdir', ['-p', props.frontendRoot]);
             console.log('\n Now you need follow the steps for de run your application symfony');
