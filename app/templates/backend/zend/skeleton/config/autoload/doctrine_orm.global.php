@@ -40,6 +40,6 @@ return [
                     # namespace-name-mapper don't delete this line
                 ]
             ]
-        ]
+        ],
     ]
 ];

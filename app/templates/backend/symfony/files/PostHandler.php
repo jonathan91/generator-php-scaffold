@@ -1,35 +1,30 @@
 <?php
-declare(strict_types = 1);
+namespace App\Service\Handler\<%= className %>;
 
-namespace <%= packageName %>\Service\Handler\<%= className %>;
 
-use Doctrine\ORM\EntityManager;
-use <%= packageName %>\Entity\<%= className %>;
-use <%= packageName %>\Service\Command\<%= className %>\Post<%= className %>Command;
+use App\Service\Command\AbstractCommand;
+use App\Service\Handler\AbstractHandler;
+use App\Entity\<%= className %>;
 
-class Post<%= className %>Handler
+class PostHandler extends AbstractHandler
 {
-    /**
-     * @var EntityManager
+   /**
+     * 
+     * {@inheritDoc}
+     * @see \App\Service\Handler\AbstractHandler::handle()
      */
-    protected $em;
-
-    public function __construct(EntityManager $em)
+    public function handle(AbstractCommand $command)
     {
-        $this->em = $em;
-    }
-
-    public function handle(Post<%= className %>Command $command): <%= className %>
-    {
-        $entity = $this->em->getRepository('<%= packageName %>:<%= className %>')->findDuplicated($command->id);
-        if ($entity && $entity[0]['id'] != (int)$command->id) {
-            throw new \Exception('The record already exist!');
-        }
-        $entity = new <%= className %>(
-            <% attributs.fields.forEach(function(element, index, elements){ %>$command-><%= element.fieldName %><% if (index !== elements.length - 1){ %>,
+        $entity = new <%= className %>([
+            <% attributs.fields.forEach(function(element, index, elements){ %>'<%= element.fieldName %>'=>$command-><%= element.fieldName %><% if (index !== elements.length - 1){ %>,
             <% }}); %>
-        );
-        $this->em->persist($entity);
-        return $entity;
+        ]);
+        $error = $this->validator->validate($entity);
+        if (count($error) == 0) {
+            $this->em->persist($entity);
+            $this->em->flush();
+            return $entity;
+        }
+        return $error;
     }
 }

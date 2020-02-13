@@ -1,8 +1,10 @@
-import { Component, OnInit, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 declare var $: any;
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class NotificationService {
 
     msgInfo = 'Information';
