@@ -4,9 +4,9 @@ namespace App\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Swagger\Annotations as SWG;
-use App\Service\Command\<%= className %>\Post<%= className %>Command;
-use App\Service\Command\<%= className %>\Put<%= className %>Command;
-use App\Service\Command\<%= className %>\Delete<%= className %>Command;
+use App\Service\Command\<%= className %>\PostCommand;
+use App\Service\Command\<%= className %>\PutCommand;
+use App\Service\Command\<%= className %>\DeleteCommand;
 use App\Service\Query\<%= className %>Query;
 
 class <%= className %>Controller extends AbstractApiController
@@ -47,9 +47,9 @@ class <%= className %>Controller extends AbstractApiController
         try{
             $command = new PostCommand($request->query->all());
             $data = $this->getServiceBus()->handle($command);
-            return $this->json($data, 200);
+            return $this->json($data, self::SUCCESS);
         } catch (\Exception $e) {
-            return $this->json($e->getMessage(), 400);
+            return $this->json($e->getMessage(), self::BAD_REQUEST);
         }
     }
     /**
@@ -90,9 +90,9 @@ class <%= className %>Controller extends AbstractApiController
             $command = new PutCommand($request->query->all());
             $command->setValue('id', $id);
             $data = $this->getServiceBus()->handle($command);
-            return $this->json($data, 200);
+            return $this->json($data, self::SUCCESS);
         } catch (\Exception $e) {
-            return $this->json($e->getMessage(), 400);
+            return $this->json($e->getMessage(), self::BAD_REQUEST);
         }
     }
     /**
@@ -107,9 +107,9 @@ class <%= className %>Controller extends AbstractApiController
             $command = new DeleteCommand();
             $command->setValue('id', $id);
             $data = $this->getServiceBus()->handle($command);
-            return $this->json($data, 200);
+            return $this->json($data, self::SUCCESS);
         } catch (\Exception $e) {
-            return $this->json($e->getMessage(), 400);
+            return $this->json($e->getMessage(), self::BAD_REQUEST);
         }
     }
 
@@ -118,13 +118,13 @@ class <%= className %>Controller extends AbstractApiController
      * @see \App\Controller\AbstractApiController::findAll()
      * @Route("/api/<%=_.replace(_.snakeCase(className),"_","-").toLowerCase()%>s", name="fildAll<%=className%>", methods={"GET"})
      */
-    public function findAll(DocumentoQuery $query)
+    public function findAll(<%= className %>Query $query, Request $request)
     {
         try{
-            $data = $query->search([]);
-            return $this->json($data, 200);
+            $data = $query->search($request->query->all());
+            return $this->json($data, self::SUCCESS);
         } catch (\Exception $e){
-            return $this->json($e->getMessage(), 400);
+            return $this->json($e->getMessage(), self::BAD_REQUEST);
         }
     }
     /**
@@ -133,13 +133,13 @@ class <%= className %>Controller extends AbstractApiController
      * @see \App\Controller\AbstractApiController::findById()
      * @Route("/api/<%=_.replace(_.snakeCase(className),"_","-").toLowerCase()%>/{id}", name="findById<%=className%>", methods={"GET"})
      */
-    public function findById(int $id, DocumentoQuery $query)
+    public function findById(int $id, <%= className %>Query $query)
     {
         try{
             $data = $query->findById($id);
-            return $this->json($data, 200);
+            return $this->json($data, self::SUCCESS);
         } catch (\Exception $e){
-            return $this->json($e->getMessage(), 400);
+            return $this->json($e->getMessage(), self::BAD_REQUEST);
         }
     }
 }

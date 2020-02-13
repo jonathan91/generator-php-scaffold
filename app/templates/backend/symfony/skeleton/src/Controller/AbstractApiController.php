@@ -4,13 +4,26 @@ namespace App\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use League\Tactician\CommandBus;
-/**
- * 
- * @author basis
- *
- */
+
 abstract class AbstractApiController  extends AbstractController
 {
+    const SUCCESS = 200;
+
+    const REDIRECT = 301;
+
+    const REDIRECT_SAME = 302;
+
+    const UNAUTHORIZED = 401;
+
+    const FORBIDDEN = 403;
+
+    const NOT_FOUND = 404;
+
+    const INTERNAL_SERVER_ERROR = 500;
+
+    const SERVICE_UNAVAILABLE = 503;
+
+    const BAD_REQUEST = 400;
     /**
      * 
      * @var CommandBus

@@ -1,6 +1,4 @@
 <?php
-declare(strict_types = 1);
-
 namespace App\Service\Handler\<%= className %>;
 
 use App\Service\Command\AbstractCommand;
@@ -31,6 +29,5 @@ class PutHandler extends AbstractHandler
             return $entity;
         }
         return $error;
-    }
     }
 }

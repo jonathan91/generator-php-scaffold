@@ -1,6 +1,4 @@
 <?php
-declare(strict_types = 1); 
-
 namespace App\Service\Query;
 
 use Doctrine\ORM\EntityManager;
@@ -17,7 +15,7 @@ class <%= className %>Query implements QueryInterface
         $this->em = $em;
     }
 
-    protected function getRepository()
+    public function getRepository()
     {
         return $this->em->getRepository('App:<%= className %>');
     }

@@ -1,11 +1,6 @@
 <?php
 namespace App\Service\Query;
 
-/**
- * 
- * @author basis
- *
- */
 interface QueryInterface
 {
     public function getRepository();

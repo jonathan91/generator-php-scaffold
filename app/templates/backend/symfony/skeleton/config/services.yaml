@@ -27,13 +27,4 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-    ####################################################
-    ######### INSERÇÃO DE SEREVIÇOS PARA TIPOS #########
-    ####################################################
-    App\Service\Handler\Consumer\PostHandler:
-        class: App\Service\Handler\Consumer\PostHandler
-        arguments:
-           - '@doctrine.orm.entity_manager'
-        tags: 
-          - { name: tactician.handler, command: App\Service\Command\Consumer\PostCommand }
 # Map-Services-Entity          

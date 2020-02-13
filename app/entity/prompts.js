@@ -404,7 +404,7 @@ module.exports = class extends Generator {
                 me.writeConfigServiceZend(answers[0], answers[1]);
             } else {
                 me.writeBackendSymfony(props);
-                me.writeConfigServiceSymfony(answers[0], answers[1]);
+                me.writeConfigServiceSymfony(answers[1]);
             }
         }); 
     }
@@ -474,14 +474,14 @@ module.exports = class extends Generator {
             props.type = element.type;
             this.writeFile(
                 'backend/symfony/files/Command.php', 
-                'src/App/Service/Command/'+values[1]+'/'+element.type+'Command.php',
+                'api/src/Service/Command/'+values[1]+'/'+element.type+'Command.php',
                 values[0],
                 values[1],
                 props
             );
             this.writeFile(
                 'backend/symfony/files/'+props.type+'Handler.php', 
-                'src/App/Service/Handler/'+values[1]+'/'+element.type+'Handler.php',
+                'api/src/Service/Handler/'+values[1]+'/'+element.type+'Handler.php',
                 values[0],
                 values[1],
                 props
@@ -489,28 +489,28 @@ module.exports = class extends Generator {
         });
         this.writeFile(
             'backend/symfony/files/Query.php', 
-            'src/App/Service/Query/'+_.upperFirst(_.camelCase(values[1]))+'Query.php',
+            'api/src/Service/Query/'+_.upperFirst(_.camelCase(values[1]))+'Query.php',
             values[0],
             values[1],
             props
         );
         this.writeFile(
             'backend/symfony/files/Repository.php', 
-            'src/App/Repository/'+_.upperFirst(_.camelCase(values[1]))+'Repository.php',
+            'api/src/Repository/'+_.upperFirst(_.camelCase(values[1]))+'Repository.php',
             values[0],
             values[1],
             props
         );
         this.writeFile(
             'backend/symfony/files/Controller.php', 
-            'src/App/Controller/'+_.upperFirst(_.camelCase(values[1]))+'Controller.php',
+            'api/src/Controller/'+_.upperFirst(_.camelCase(values[1]))+'Controller.php',
             values[0],
             values[1],
             props
         );
         this.writeFile(
             'backend/symfony/files/Entity.php', 
-            'src/App/Entity/'+_.upperFirst(_.camelCase(values[1]))+'.php',
+            'api/src/Entity/'+_.upperFirst(_.camelCase(values[1]))+'.php',
             values[0],
             values[1],
             props
@@ -642,36 +642,36 @@ module.exports = class extends Generator {
         }
     }
     
-    writeConfigServiceSymfony(bundle, entity)
+    writeConfigServiceSymfony(entity)
     {
         util.rewriteFile({
-            path: 'src/config/',
-            file: 'services.yml',
+            path: 'api/config/',
+            file: 'services.yaml',
             needle: 'Map-Services-Entity',
             splicable: [
     `# ${entity}
- App\\Service\\Query\\${entity}Query:
-  class: App\\Service\\Query\\${entity}Query
-  arguments:
-   - '@doctrine.orm.entity_manager'
- App\\Service\\Handler\\${entity}\\PostHandler:
-  class: App\\Service\\Handler\\${entity}\\PostHandler
-  arguments:
-   - '@doctrine.orm.entity_manager'
-  tags:
-   - { name: tactician.handler, command: App\\Service\\Command\\${entity}\\PostCommand }
- App\\Service\\Handler\\${entity}\\PutHandler:
-  class: App\\Service\\Handler\\${entity}\\Put${entity}Handler
-  arguments:
-   - '@doctrine.orm.entity_manager'
-  tags:
-   - { name: tactician.handler, command: App\\Service\\Command\\${entity}\\PutCommand }
- App\\Service\\${entity}\\Handler\\DeleteHandler:
-  class: App\\Service\\Handler\\${entity}\\DeleteHandler
-  arguments:
-   - '@doctrine.orm.entity_manager'
-  tags:
-   - { name: tactician.handler, command: App\\Service\\Command\\${entity}\\DeleteCommand }`
+    App\\Service\\Query\\${entity}Query:
+        class: App\\Service\\Query\\${entity}Query
+        arguments:
+           - '@doctrine.orm.entity_manager'
+    App\\Service\\Handler\\${entity}\\PostHandler:
+        class: App\\Service\\Handler\\${entity}\\PostHandler
+        arguments:
+           - '@doctrine.orm.entity_manager'
+        tags:
+           - { name: tactician.handler, command: App\\Service\\Command\\${entity}\\PostCommand }
+    App\\Service\\Handler\\${entity}\\PutHandler:
+        class: App\\Service\\Handler\\${entity}\\PutHandler
+        arguments:
+           - '@doctrine.orm.entity_manager'
+        tags:
+           - { name: tactician.handler, command: App\\Service\\Command\\${entity}\\PutCommand }
+    App\\Service\\Handler\\${entity}\\DeleteHandler:
+        class: App\\Service\\Handler\\${entity}\\DeleteHandler
+        arguments:
+           - '@doctrine.orm.entity_manager'
+        tags:
+           - { name: tactician.handler, command: App\\Service\\Command\\${entity}\\DeleteCommand }`
         ]
     },this);
     }
