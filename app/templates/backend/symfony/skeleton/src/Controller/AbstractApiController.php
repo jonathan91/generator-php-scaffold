@@ -4,6 +4,8 @@ namespace App\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use League\Tactician\CommandBus;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Validator\ConstraintViolationList;
 
 abstract class AbstractApiController  extends AbstractController
 {
@@ -41,12 +43,26 @@ abstract class AbstractApiController  extends AbstractController
    
     /**
      * 
+     * {@inheritDoc}
+     * @see \Symfony\Bundle\FrameworkBundle\Controller\AbstractController::json()
+     */
+    protected function json($data, int $status = 200, array $headers = [], array $context = []): JsonResponse
+    {
+        if($data instanceof  ConstraintViolationList){
+            return parent::json($data, self::BAD_REQUEST, $headers, $context);
+        }
+        return parent::json($data, self::SUCCESS, $headers, $context);
+    } 
+
+    /**
+     * 
      * @return mixed
      */
     public function getServiceBus()
     {
         return $this->command;
     }
+    
     abstract public function post(Request $request);
     
     abstract public function put($id, Request $request);
