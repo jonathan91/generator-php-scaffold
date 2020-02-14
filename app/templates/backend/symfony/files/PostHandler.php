@@ -19,8 +19,8 @@ class PostHandler extends AbstractHandler
             <% attributs.fields.forEach(function(element, index, elements){ %>'<%= element.fieldName %>'=>$command-><%= element.fieldName %><% if (index !== elements.length - 1){ %>,
             <% }}); %>
         ]);
-        $error = $this->validator->validate($entity);
-        if (count($error) == 0) {
+        $error = $this->validator->validate($command);
+        if ($error->count() == 0) {
             $this->em->persist($entity);
             $this->em->flush();
             return $entity;

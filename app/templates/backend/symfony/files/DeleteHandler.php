@@ -14,14 +14,18 @@ class DeleteHandler extends AbstractHandler
      */
     public function handle(AbstractCommand $command)
     {
-        $entity = $this->em->getRepository('App:<%= className %>')->find($command->id);
-        if (empty($entity)) {
-            throw new NotFoundHttpException("The id {$command->id} record not found");
+        $error = $this->validator->validate($command);
+        if ($error->count() == 0) {
+            $entity = $this->em->getRepository('App:<%= className %>')->find($command->id);
+            if (empty($entity)) {
+                throw new NotFoundHttpException("The id {$command->id} record not found");
+            }
+            $this->em->remove($entity);
+            $this->em->flush();
+            return [
+                "Iten {$command->id} deleted with success."
+            ];
         }
-        $this->em->remove($entity);
-        $this->em->flush();
-        return [
-            "Iten {$command->id} deleted with success."
-        ];
+        return $error;
     }
 }
