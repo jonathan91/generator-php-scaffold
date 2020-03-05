@@ -17,10 +17,6 @@ export const <%= _.toLower(className) %>Route: Routes = [
     component: <%= className %>FormComponent
   },
   {
-    path: ':id/aprove',
-    component: <%= className %>Component
-  },
-  {
     path: ':id',
     component: <%= className %>DetailComponent
   },

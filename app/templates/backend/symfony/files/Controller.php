@@ -45,7 +45,8 @@ class <%= className %>Controller extends AbstractApiController
     public function post(Request $request)
     {
         try{
-            $command = new PostCommand($request->query->all());
+            $content = json_decode($request->getContent(), true);
+            $command = new PostCommand($content);
             $data = $this->getServiceBus()->handle($command);
             return $this->json($data, self::SUCCESS);
         } catch (\Exception $e) {
@@ -87,7 +88,8 @@ class <%= className %>Controller extends AbstractApiController
     public function put($id, Request $request)
     {
         try {
-            $command = new PutCommand($request->query->all());
+            $content = json_decode($request->getContent(), true);
+            $command = new PutCommand($content);
             $command->setValue('id', $id);
             $data = $this->getServiceBus()->handle($command);
             return $this->json($data, self::SUCCESS);
