@@ -2,22 +2,24 @@
 namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Swagger\Annotations as SWG;
-use App\Service\Command\<%= className %>\PostCommand;
-use App\Service\Command\<%= className %>\PutCommand;
-use App\Service\Command\<%= className %>\DeleteCommand;
-use App\Service\Query\<%= className %>Query;
+use App\Service\Command\<%= _.startCase(className).replace(' ', '') %>\PostCommand;
+use App\Service\Command\<%= _.startCase(className).replace(' ', '') %>\PutCommand;
+use App\Service\Command\<%= _.startCase(className).replace(' ', '') %>\DeleteCommand;
+use App\Service\Query\<%= _.startCase(className).replace(' ', '') %>Query;
 
-class <%= className %>Controller extends AbstractApiController
+class <%= _.startCase(className).replace(' ', '') %>Controller extends AbstractApiController
 {
     /**
      * 
      * {@inheritDoc}
      * @see \App\Controller\AbstractApiController::post()
-     * @Route("/api/<%=_.replace(_.snakeCase(className),"_","-").toLowerCase()%>", name="new<%= className %>", methods={"POST"})
+     * @Route("/api/<%=_.kebabCase(className).toLowerCase()%>", name="new<%= _.startCase(className).replace(' ', '') %>", methods={"POST"})
+     * @SWG\Tag(name="<%=_.replace(_.kebabCase(className),"-"," ")%>")
      * @SWG\Post(
-     *   path="/api/<%=_.replace(_.snakeCase(className),"_","-").toLowerCase()%>",
+     *   path="/api/<%=_.kebabCase(className).toLowerCase()%>",
      *   summary="Post to URL",
      *   @SWG\Parameter(
      *      name="body",
@@ -44,22 +46,16 @@ class <%= className %>Controller extends AbstractApiController
      */
     public function post(Request $request)
     {
-        try{
-            $content = json_decode($request->getContent(), true);
-            $command = new PostCommand($content);
-            $data = $this->getServiceBus()->handle($command);
-            return $this->json($data, self::SUCCESS);
-        } catch (\Exception $e) {
-            return $this->json($e->getMessage(), self::BAD_REQUEST);
-        }
+        return $this->preparePost($request, new PostCommand());
     }
     /**
      *
      * {@inheritDoc}
      * @see \App\Controller\AbstractApiController::put()
-     * @Route("/api/<%=_.replace(_.snakeCase(className),"_","-").toLowerCase()%>/{id}", name="edit<%=className%>", methods={"PUT"})
+     * @Route("/api/<%=_.kebabCase(className).toLowerCase()%>/{id}", name="edit<%=_.startCase(className).replace(' ', '')%>", methods={"PUT"})
+     * @SWG\Tag(name="<%=_.replace(_.kebabCase(className),"-"," ")%>")
      * @SWG\Put(
-     *   path="/api/<%=_.replace(_.snakeCase(className),"_","-").toLowerCase()%>/{id}",
+     *   path="/api/<%=_.kebabCase(className).toLowerCase()%>/{id}",
      *   summary="Put to URL",
      *   @SWG\Parameter(
      *      name="body",
@@ -87,61 +83,56 @@ class <%= className %>Controller extends AbstractApiController
      */
     public function put($id, Request $request)
     {
-        try {
-            $content = json_decode($request->getContent(), true);
-            $command = new PutCommand($content);
-            $command->setValue('id', $id);
-            $data = $this->getServiceBus()->handle($command);
-            return $this->json($data, self::SUCCESS);
-        } catch (\Exception $e) {
-            return $this->json($e->getMessage(), self::BAD_REQUEST);
-        }
+        return $this->preparePut($id, $request, new PutCommand());
     }
     /**
      *
      * {@inheritDoc}
      * @see \App\Controller\AbstractApiController::delete()
-     * @Route("/api/<%=_.replace(_.snakeCase(className),"_","-").toLowerCase()%>/{id}", name="delete<%=className%>", methods={"DELETE"})
+     * @Route("/api/<%=_.kebabCase(className).toLowerCase()%>/{id}", name="delete<%=_.startCase(className).replace(' ', '')%>", methods={"DELETE"})
+     * @SWG\Tag(name="<%=_.replace(_.kebabCase(className),"-"," ")%>")
+     * @SWG\Response(
+     *     response=200,
+     *     description="API Result",
+     * )
      */
     public function delete($id, Request $request)
     {
-        try {
-            $command = new DeleteCommand();
-            $command->setValue('id', $id);
-            $data = $this->getServiceBus()->handle($command);
-            return $this->json($data, self::SUCCESS);
-        } catch (\Exception $e) {
-            return $this->json($e->getMessage(), self::BAD_REQUEST);
-        }
+        return $this->prepareDelete($id, new DeleteCommand());
     }
 
     /**
      * {@inheritDoc}
-     * @see \App\Controller\AbstractApiController::findAll()
-     * @Route("/api/<%=_.replace(_.snakeCase(className),"_","-").toLowerCase()%>s", name="fildAll<%=className%>", methods={"GET"})
+     * @see \App\Controller\AbstractApiController::getAll()
+     * @Route("/api/<%=_.kebabCase(className).toLowerCase()%>", name="getAll<%=_.startCase(className).replace(' ', '')%>", methods={"GET"})
+     * @SWG\Tag(name="<%=_.replace(_.snakeCase(className),"_"," ")%>")
+     * @SWG\Response(
+     *     response=200,
+     *     description="API Result",
+     * )
      */
-    public function findAll(<%= className %>Query $query, Request $request)
+    public function getAll(<%= className %>Query $query, Request $request)
     {
-        try{
-            $data = $query->search($request->query->all());
-            return $this->json($data, self::SUCCESS);
-        } catch (\Exception $e){
-            return $this->json($e->getMessage(), self::BAD_REQUEST);
-        }
+        return $this->prepareSearch($query, $request);
     }
     /**
      *
      * {@inheritDoc}
      * @see \App\Controller\AbstractApiController::findById()
-     * @Route("/api/<%=_.replace(_.snakeCase(className),"_","-").toLowerCase()%>/{id}", name="findById<%=className%>", methods={"GET"})
+     * @Route("/api/<%=_.kebabCase(className).toLowerCase()%>/{id}", name="getById<%=_.startCase(className).replace(' ', '')%>", methods={"GET"})
+     * @SWG\Tag(name="<%=_.replace(_.snakeCase(className),"_"," ")%>")
+     * @SWG\Response(
+     *     response=200,
+     *     description="API Result",
+     * )
      */
-    public function findById(int $id, <%= className %>Query $query)
+    public function getById(int $id, <%= className %>Query $query)
     {
         try{
             $data = $query->findById($id);
-            return $this->json($data, self::SUCCESS);
+            return $this->json($data, Response::HTTP_OK);
         } catch (\Exception $e){
-            return $this->json($e->getMessage(), self::BAD_REQUEST);
+            return $this->json($e->getMessage(), Response::HTTP_BAD_REQUEST);
         }
     }
 }

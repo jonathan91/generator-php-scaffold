@@ -2,29 +2,29 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { environment } from 'environments/environment';
-import { <%= className %> } from '../models/<%= _.toLower(className) %>.model';
+import { <%= _.startCase(className).replace(' ', '') %> } from '../models/<%= _.kebabCase(className).toLowerCase() %>.model';
 
 @Injectable()
-export class <%= className %>Service {
+export class <%= _.startCase(className).replace(' ', '') %>Service {
 
   resourceUrl = environment.apiUrl + '/<%= _.toLower(className) %>';
 
   constructor(private http: HttpClient) { }
 
-  create(<%= _.toLower(className) %>: <%= className %>): Observable<<%= className %>> {
-    return this.http.post<<%= className %>>(this.resourceUrl, <%= _.toLower(className) %>);
+  create(<%= _.camelCase(className).replace(' ', '') %>: <%= _.startCase(className).replace(' ', '') %>): Observable<<%= _.startCase(className).replace(' ', '') %>> {
+    return this.http.post<<%= _.startCase(className).replace(' ', '') %>>(this.resourceUrl, <%= _.camelCase(className).replace(' ', '') %>);
   }
 
-  update(<%= _.toLower(className) %>: <%= className %>): Observable<<%= className %>> {
-    return this.http.put<<%= className %>>(`${this.resourceUrl}/${<%= _.toLower(className) %>.id}`, <%= _.toLower(className) %>);
+  update(<%= _.camelCase(className).replace(' ', '') %>: <%= _.startCase(className).replace(' ', '') %>): Observable<<%= _.startCase(className).replace(' ', '') %>> {
+    return this.http.put<<%= _.startCase(className).replace(' ', '') %>>(`${this.resourceUrl}/${<%= _.camelCase(className).replace(' ', '') %>.id}`, <%= _.camelCase(className).replace(' ', '') %>);
   }
 
-  find(id: number): Observable<<%= className %>> {
-    return this.http.get<<%= className %>>(`${this.resourceUrl}/${id}`);
+  find(id: number): Observable<<%= _.startCase(className).replace(' ', '') %>> {
+    return this.http.get<<%= _.startCase(className).replace(' ', '') %>>(`${this.resourceUrl}/${id}`);
   }
 
-  query(req?: any): Observable<<%= className %>[]> {
-    return this.http.get<<%= className %>[]>(this.resourceUrl, { params: req });
+  query(req?: any): Observable<<%= _.startCase(className).replace(' ', '') %>[]> {
+    return this.http.get<<%= _.startCase(className).replace(' ', '') %>[]>(this.resourceUrl, { params: req });
   }
   
   delete(id: number) {

@@ -4,23 +4,23 @@ import { MatDialog } from '@angular/material';
 import { DialogContent } from 'app/shared/dialog/dialog-content.component';
 import { NotificationService } from 'app/shared/services/notification.service';
 import { CardComponent } from 'app/shared/card/card.component';
-import { <%= className %>Service } from './services/<%= _.toLower(className) %>.service';
-import { <%= className %> } from './models/<%= _.toLower(className) %>.model';
+import { <%= _.startCase(className).replace(' ', '') %>Service } from './services/<%= _.kebabCase(className).toLowerCase() %>.service';
+import { <%= _.startCase(className).replace(' ', '') %> } from './models/<%= _.kebabCase(className).toLowerCase() %>.model';
 
 @Component({
-  selector: 'app-<%= _.toLower(className) %>',
-  templateUrl: './<%= _.toLower(className) %>.component.html'
+  selector: 'app-<%= _.kebabCase(className).toLowerCase() %>',
+  templateUrl: './<%= _.kebabCase(className).toLowerCase() %>.component.html'
 })
-export class <%= className %>Component implements OnInit, OnDestroy {
+export class <%= _.startCase(className).replace(' ', '') %>Component implements OnInit, OnDestroy {
 
   @ViewChild(CardComponent)
   card: CardComponent;
 
-  searchUrl: string = this.<%= _.toLower(className) %>Service.resourceUrl;
+  searchUrl: string = this.<%= _.camelCase(className).replace(' ', '') %>Service.resourceUrl;
 
   constructor(
     private router: Router,
-    private <%= _.toLower(className) %>Service: <%= className %>Service,
+    private <%= _.camelCase(className).replace(' ', '') %>Service: <%= _.startCase(className).replace(' ', '') %>Service,
     public dialog: MatDialog,
     private notification: NotificationService
   ) {}
@@ -38,20 +38,21 @@ export class <%= className %>Component implements OnInit, OnDestroy {
     });
   }
 
-  view(<%= _.toLower(className) %>: <%= className %>) {
-    this.router.navigate([`/<%= _.toLower(className) %>/${<%= _.toLower(className) %>.id}`]);
+  view(<%= _.camelCase(className).replace(' ', '') %>: <%= _.startCase(className).replace(' ', '') %>) {
+    this.router.navigate([`/<%= _.toLower(className) %>/${<%= _.camelCase(className).replace(' ', '') %>.id}`]);
   }
 
-  edit(<%= _.toLower(className) %>: <%= className %>) {
-   this.router.navigate([`/<%= _.toLower(className) %>/${<%= _.toLower(className) %>.id}/edit`]);
+  edit(<%= _.camelCase(className).replace(' ', '') %>: <%= _.startCase(className).replace(' ', '') %>) {
+   this.router.navigate([`/<%= _.toLower(className) %>/${<%= _.camelCase(className).replace(' ', '') %>.id}/edit`]);
   }
 
-  delete(<%= _.toLower(className) %>: <%= className %>) {
+  delete(<%= _.camelCase(className).replace(' ', '') %>: <%= _.startCase(className).replace(' ', '') %>) {
     this.dialog.open(DialogContent).beforeClose().subscribe(
       res => {
         if(res){
-          this.<%= _.toLower(className) %>Service.delete(<%= _.toLower(className) %>.id).subscribe(
+          this.<%= _.camelCase(className).replace(' ', '') %>Service.delete(<%= _.camelCase(className).replace(' ', '') %>.id).subscribe(
             response => {
+              this.card.ngOnInit();
               this.notification.showNotification(this.notification.msgSuccess, 'success');
             },
             error => {

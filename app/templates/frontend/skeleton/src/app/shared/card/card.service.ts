@@ -7,6 +7,6 @@ export class CardService {
     constructor(private http: HttpClient) {}
 
     public query(url: string, params?: any) {
-       return this.http.get(url, params);
+        return this.http.get<{data: Array<Object>, total: number}>(`${url}`, { params: params });
     }
 }

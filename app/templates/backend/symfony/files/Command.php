@@ -1,13 +1,15 @@
 <?php
-namespace App\Service\Command\<%= className %>;
+namespace App\Service\Command\<%= _.startCase(className).replace(' ', '') %>;
 
+use App\Service\Command\AbstractCommand;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class <%= attributs.type %>Command
+class <%= attributs.type %>Command extends AbstractCommand
 {
     /**
 	 * @var int
-	 */
+     * <% if (attributs.type === 'Delete') { %>@Assert\NotBlank() <% } %>
+  	 */
 	public $id;
     <% if (attributs.type !== 'Delete') { attributs.fields.forEach(function(element){ %>
     /**
@@ -35,6 +37,6 @@ class <%= attributs.type %>Command
     * )
     * <% } %>
     */
-    public $<%= element.fieldName %>;
+    public $<%= _.camelCase(element.fieldName).replace(' ','') %>;
     <% }); } %>
 }

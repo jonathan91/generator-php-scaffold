@@ -33,7 +33,10 @@ abstract class AbstractEntity
     public function setValue(string $key, $value)
     {
         $this->_data[$key] = $value;
-        $this->$key = $value;
+        $method = "set".ucfirst($key);
+        if (method_exists($this, $method)) {
+            $this->$method($value);
+        }
     }
     
     /**

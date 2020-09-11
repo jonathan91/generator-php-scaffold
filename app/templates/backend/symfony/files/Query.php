@@ -1,32 +1,17 @@
 <?php
 namespace App\Service\Query;
 
-use Doctrine\ORM\EntityManager;
+use App\Entity\<%= _.startCase(className).replace(' ', '') %>;
 
-class <%= className %>Query implements QueryInterface
+class <%= _.startCase(className).replace(' ', '') %>Query extends AbstractQuery
 {
     /**
-     * @var EntityManager
+     *
+     * {@inheritDoc}
+     * @see \App\Service\Query\QueryInterface::getRepository()
      */
-    protected $em;
-
-    public function __construct(EntityManager $em)
-    {
-        $this->em = $em;
-    }
-
     public function getRepository()
     {
-        return $this->em->getRepository('App:<%= className %>');
-    }
-
-    public function search($parameters)
-    {
-    	return $this->getRepository()->search($parameters);
-    }
-
-    public function findById(int $id)
-    {
-        return $this->getRepository()->find($id);
+        return $this->em->getRepository(<%= _.startCase(className).replace(' ', '') %>::class);
     }
 }

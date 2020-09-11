@@ -15,11 +15,12 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install -j$(nproc) iconv \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install -j$(nproc) gd
-COPY . /var/www/api
+COPY api/ /var/www/api
 WORKDIR /var/www/api
-ADD docker/php.ini /usr/local/etc/php/conf.d/php-extras.ini
-ADD docker/000-default.conf /etc/apache2/sites-available/000-default.conf
+ADD docker/php_config/php.ini /usr/local/etc/php/conf.d/php-extras.ini
+ADD docker/apache_config/000-default.conf /etc/apache2/sites-available/000-default.conf
 RUN chown -R www-data:www-data /var/www/api
+RUN pecl install xdebug apcu
 RUN a2enmod rewrite
 RUN composer install
-EXPOSE 80
+EXPOSE 80 9000

@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <app-card link="/<%= _.toLower(className) %>/new" (click)="click($event)" title="<%= className %>" category="Information List" [url]="searchUrl"></app-card>
+                <app-card link="/<%= _.kebabCase(className).toLowerCase() %>/new" (click)="click($event)" title="<%= _.startCase(className) %>" category="Information List" [url]="searchUrl"></app-card>
             </div>
         </div>
     </div>

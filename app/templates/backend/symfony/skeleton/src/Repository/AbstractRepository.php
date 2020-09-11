@@ -6,6 +6,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 
 abstract class AbstractRepository extends EntityRepository
 {
+    protected $maxResult = 10;
     /**
      *
      * @param array $params
@@ -34,7 +35,7 @@ abstract class AbstractRepository extends EntityRepository
             $query->orderBy("tbl.{$sort}", $order);
         }
         $query->setFirstResult($offset);
-        $query->setMaxResults(10);
+        $query->setMaxResults($this->maxResult);
         $paginator = new Paginator($query);
         $result['data'] = $paginator->getIterator();
         $result['total'] = $paginator->count();

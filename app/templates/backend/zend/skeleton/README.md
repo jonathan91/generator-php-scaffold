@@ -1,223 +1,150 @@
-# ZendSkeletonApplication
+# Expressive Skeleton and Installer
 
-## Introduction
+[![Build Status](https://secure.travis-ci.org/zendframework/zend-expressive-skeleton.svg?branch=master)](https://secure.travis-ci.org/zendframework/zend-expressive-skeleton)
+[![Coverage Status](https://coveralls.io/repos/github/zendframework/zend-expressive-skeleton/badge.svg?branch=master)](https://coveralls.io/github/zendframework/zend-expressive-skeleton?branch=master)
 
-This is a skeleton application using the Zend Framework MVC layer and module
-systems. This application is meant to be used as a starting place for those
-looking to get their feet wet with Zend Framework.
+*Begin developing PSR-15 middleware applications in seconds!*
 
-## Installation using Composer
+[zend-expressive](https://github.com/zendframework/zend-expressive) builds on
+[zend-stratigility](https://github.com/zendframework/zend-stratigility) to
+provide a minimalist PSR-15 middleware framework for PHP with routing, DI
+container, optional templating, and optional error handling capabilities.
 
-The easiest way to create a new Zend Framework project is to use
-[Composer](https://getcomposer.org/).  If you don't have it already installed,
-then please install as per the [documentation](https://getcomposer.org/doc/00-intro.md).
+This installer will setup a skeleton application based on zend-expressive by
+choosing optional packages based on user input as demonstrated in the following
+screenshot:
 
-To create your new Zend Framework project:
+![screenshot-installer](https://cloud.githubusercontent.com/assets/459648/10410494/16bdc674-6f6d-11e5-8190-3c1466e93361.png)
 
-```bash
-$ composer create-project -sdev zendframework/skeleton-application path/to/install
-```
+The user selected packages are saved into `composer.json` so that everyone else
+working on the project have the same packages installed. Configuration files and
+templates are prepared for first use. The installer command is removed from
+`composer.json` after setup succeeded, and all installer related files are
+removed.
 
-Once installed, you can test it out immediately using PHP's built-in web server:
+## Getting Started
 
-```bash
-$ cd path/to/install
-$ php -S 0.0.0.0:8080 -t public/ public/index.php
-# OR use the composer alias:
-$ composer run --timeout 0 serve
-```
-
-This will start the cli-server on port 8080, and bind it to all network
-interfaces. You can then visit the site at http://localhost:8080/
-- which will bring up Zend Framework welcome page.
-
-**Note:** The built-in CLI server is *for development only*.
-
-## Development mode
-
-The skeleton ships with [zf-development-mode](https://github.com/zfcampus/zf-development-mode)
-by default, and provides three aliases for consuming the script it ships with:
+Start your new Expressive project with composer:
 
 ```bash
-$ composer development-enable  # enable development mode
-$ composer development-disable # disable development mode
-$ composer development-status  # whether or not development mode is enabled
+$ composer create-project zendframework/zend-expressive-skeleton <project-path>
 ```
 
-You may provide development-only modules and bootstrap-level configuration in
-`config/development.config.php.dist`, and development-only application
-configuration in `config/autoload/development.local.php.dist`. Enabling
-development mode will copy these files to versions removing the `.dist` suffix,
-while disabling development mode will remove those copies.
-
-Development mode is automatically enabled as part of the skeleton installation process. 
-After making changes to one of the above-mentioned `.dist` configuration files you will
-either need to disable then enable development mode for the changes to take effect,
-or manually make matching updates to the `.dist`-less copies of those files.
-
-## Running Unit Tests
-
-To run the supplied skeleton unit tests, you need to do one of the following:
-
-- During initial project creation, select to install the MVC testing support.
-- After initial project creation, install [zend-test](https://zendframework.github.io/zend-test/):
-
-  ```bash
-  $ composer require --dev zendframework/zend-test
-  ```
-
-Once testing support is present, you can run the tests using:
+After choosing and installing the packages you want, go to the
+`<project-path>` and start PHP's built-in web server to verify installation:
 
 ```bash
-$ ./vendor/bin/phpunit
+$ composer run --timeout=0 serve
 ```
 
-If you need to make local modifications for the PHPUnit test setup, copy
-`phpunit.xml.dist` to `phpunit.xml` and edit the new file; the latter has
-precedence over the former when running tests, and is ignored by version
-control. (If you want to make the modifications permanent, edit the
-`phpunit.xml.dist` file.)
+You can then browse to http://localhost:8080.
 
-## Using Vagrant
-
-This skeleton includes a `Vagrantfile` based on ubuntu 16.04 (bento box)
-with configured Apache2 and PHP 7.0. Start it up using:
-
-```bash
-$ vagrant up
-```
-
-Once built, you can also run composer within the box. For example, the following
-will install dependencies:
-
-```bash
-$ vagrant ssh -c 'composer install'
-```
-
-While this will update them:
-
-```bash
-$ vagrant ssh -c 'composer update'
-```
-
-While running, Vagrant maps your host port 8080 to port 80 on the virtual
-machine; you can visit the site at http://localhost:8080/
-
-> ### Vagrant and VirtualBox
+> ### Linux users
 >
-> The vagrant image is based on ubuntu/xenial64. If you are using VirtualBox as
-> a provider, you will need:
+> On PHP versions prior to 7.1.14 and 7.2.2, this command might not work as
+> expected due to a bug in PHP that only affects linux environments. In such
+> scenarios, you will need to start the [built-in web
+> server](http://php.net/manual/en/features.commandline.webserver.php) yourself,
+> using the following command:
 >
-> - Vagrant 1.8.5 or later
-> - VirtualBox 5.0.26 or later
+> ```bash
+> $ php -S 0.0.0.0:8080 -t public/ public/index.php
+> ```
 
-For vagrant documentation, please refer to [vagrantup.com](https://www.vagrantup.com/)
+> ### Setting a timeout
+>
+> Composer commands time out after 300 seconds (5 minutes). On Linux-based
+> systems, the `php -S` command that `composer serve` spawns continues running
+> as a background process, but on other systems halts when the timeout occurs.
+>
+> As such, we recommend running the `serve` script using a timeout. This can
+> be done by using `composer run` to execute the `serve` script, with a
+> `--timeout` option. When set to `0`, as in the previous example, no timeout
+> will be used, and it will run until you cancel the process (usually via
+> `Ctrl-C`). Alternately, you can specify a finite timeout; as an example,
+> the following will extend the timeout to a full day:
+>
+> ```bash
+> $ composer run --timeout=86400 serve
+> ```
 
-## Using docker-compose
+## Troubleshooting
 
-This skeleton provides a `docker-compose.yml` for use with
-[docker-compose](https://docs.docker.com/compose/); it
-uses the `Dockerfile` provided as its base. Build and start the image using:
+If the installer fails during the ``composer create-project`` phase, please go
+through the following list before opening a new issue. Most issues we have seen
+so far can be solved by `self-update` and `clear-cache`.
 
-```bash
-$ docker-compose up -d --build
-```
+1. Be sure to work with the latest version of composer by running `composer self-update`.
+2. Try clearing Composer's cache by running `composer clear-cache`.
 
-At this point, you can visit http://localhost:8080 to see the site running.
+If neither of the above help, you might face more serious issues:
 
-You can also run composer from the image. The container environment is named
-"zf", so you will pass that value to `docker-compose run`:
+- Info about the [zlib_decode error](https://github.com/composer/composer/issues/4121).
+- Info and solutions for [composer degraded mode](https://getcomposer.org/doc/articles/troubleshooting.md#degraded-mode).
 
-```bash
-$ docker-compose run zf composer install
-```
+## Application Development Mode Tool
 
-## Web server setup
+This skeleton comes with [zf-development-mode](https://github.com/zfcampus/zf-development-mode). 
+It provides a composer script to allow you to enable and disable development mode.
 
-### Apache setup
+### To enable development mode
 
-To setup apache, setup a virtual host to point to the public/ directory of the
-project and you should be ready to go! It should look something like below:
-
-```apache
-<VirtualHost *:80>
-    ServerName zfapp.localhost
-    DocumentRoot /path/to/zfapp/public
-    <Directory /path/to/zfapp/public>
-        DirectoryIndex index.php
-        AllowOverride All
-        Order allow,deny
-        Allow from all
-        <IfModule mod_authz_core.c>
-        Require all granted
-        </IfModule>
-    </Directory>
-</VirtualHost>
-```
-
-### Nginx setup
-
-To setup nginx, open your `/path/to/nginx/nginx.conf` and add an
-[include directive](http://nginx.org/en/docs/ngx_core_module.html#include) below
-into `http` block if it does not already exist:
-
-```nginx
-http {
-    # ...
-    include sites-enabled/*.conf;
-}
-```
-
-
-Create a virtual host configuration file for your project under `/path/to/nginx/sites-enabled/zfapp.localhost.conf`
-it should look something like below:
-
-```nginx
-server {
-    listen       80;
-    server_name  zfapp.localhost;
-    root         /path/to/zfapp/public;
-
-    location / {
-        index index.php;
-        try_files $uri $uri/ @php;
-    }
-
-    location @php {
-        # Pass the PHP requests to FastCGI server (php-fpm) on 127.0.0.1:9000
-        fastcgi_pass   127.0.0.1:9000;
-        fastcgi_param  SCRIPT_FILENAME /path/to/zfapp/public/index.php;
-        include fastcgi_params;
-    }
-}
-```
-
-Restart the nginx, now you should be ready to go!
-
-## QA Tools
-
-The skeleton does not come with any QA tooling by default, but does ship with
-configuration for each of:
-
-- [phpcs](https://github.com/squizlabs/php_codesniffer)
-- [phpunit](https://phpunit.de)
-
-Additionally, it comes with some basic tests for the shipped
-`Application\Controller\IndexController`.
-
-If you want to add these QA tools, execute the following:
+**Note:** Do NOT run development mode on your production server!
 
 ```bash
-$ composer require --dev phpunit/phpunit squizlabs/php_codesniffer zendframework/zend-test
+$ composer development-enable
 ```
 
-We provide aliases for each of these tools in the Composer configuration:
+**Note:** Enabling development mode will also clear your configuration cache, to 
+allow safely updating dependencies and ensuring any new configuration is picked 
+up by your application.
+
+### To disable development mode
 
 ```bash
-# Run CS checks:
-$ composer cs-check
-# Fix CS errors:
-$ composer cs-fix
-# Run PHPUnit tests:
+$ composer development-disable
+```
+
+### Development mode status
+
+```bash
+$ composer development-status
+```
+
+## Configuration caching
+
+By default, the skeleton will create a configuration cache in
+`data/config-cache.php`. When in development mode, the configuration cache is
+disabled, and switching in and out of development mode will remove the
+configuration cache.
+
+You may need to clear the configuration cache in production when deploying if
+you deploy to the same directory. You may do so using the following:
+
+```bash
+$ composer clear-config-cache
+```
+
+You may also change the location of the configuration cache itself by editing
+the `config/config.php` file and changing the `config_cache_path` entry of the
+local `$cacheConfig` variable.
+
+## Skeleton Development
+
+This section applies only if you cloned this repo with `git clone`, not when you
+installed expressive with `composer create-project ...`.
+
+If you want to run tests against the installer, you need to clone this repo and
+setup all dependencies with composer.  Make sure you **prevent composer running
+scripts** with `--no-scripts`, otherwise it will remove the installer and all
+tests.
+
+```bash
+$ composer update --no-scripts
 $ composer test
 ```
+
+Please note that the installer tests remove installed config files and templates
+before and after running the tests.
+
+Before contributing read [the contributing guide](docs/CONTRIBUTING.md).

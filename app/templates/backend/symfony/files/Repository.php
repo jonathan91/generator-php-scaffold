@@ -1,5 +1,5 @@
 <?php
 namespace App\Repository;
 
-class <%= className %>Repository extends AbstractRepository
+class <%= _.startCase(className).replace(' ', '') %>Repository extends AbstractRepository
 { }

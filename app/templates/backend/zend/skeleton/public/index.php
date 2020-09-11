@@ -1,40 +1,30 @@
 <?php
 
-use Zend\Mvc\Application;
-use Zend\Stdlib\ArrayUtils;
+declare(strict_types=1);
+
+// Delegate static file requests back to the PHP built-in webserver
+if (PHP_SAPI === 'cli-server' && $_SERVER['SCRIPT_FILENAME'] !== __FILE__) {
+    return false;
+}
+
+chdir(dirname(__DIR__));
+require 'vendor/autoload.php';
 
 /**
- * This makes our life easier when dealing with paths. Everything is relative
- * to the application root now.
+ * Self-called anonymous function that creates its own scope and keep the global namespace clean.
  */
-chdir(dirname(__DIR__));
+(function () {
+    /** @var \Psr\Container\ContainerInterface $container */
+    $container = require 'config/container.php';
 
-// Decline static file requests back to the PHP built-in webserver
-if (php_sapi_name() === 'cli-server') {
-    $path = realpath(__DIR__ . parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
-    if (__FILE__ !== $path && is_file($path)) {
-        return false;
-    }
-    unset($path);
-}
+    /** @var \Zend\Expressive\Application $app */
+    $app = $container->get(\Zend\Expressive\Application::class);
+    $factory = $container->get(\Zend\Expressive\MiddlewareFactory::class);
 
-// Composer autoloading
-include __DIR__ . '/../vendor/autoload.php';
+    // Execute programmatic/declarative middleware pipeline and routing
+    // configuration statements
+    (require 'config/pipeline.php')($app, $factory, $container);
+    (require 'config/routes.php')($app, $factory, $container);
 
-if (! class_exists(Application::class)) {
-    throw new RuntimeException(
-        "Unable to load application.\n"
-        . "- Type `composer install` if you are developing locally.\n"
-        . "- Type `vagrant ssh -c 'composer install'` if you are using Vagrant.\n"
-        . "- Type `docker-compose run zf composer install` if you are using Docker.\n"
-    );
-}
-
-// Retrieve configuration
-$appConfig = require __DIR__ . '/../config/application.config.php';
-if (file_exists(__DIR__ . '/../config/development.config.php')) {
-    $appConfig = ArrayUtils::merge($appConfig, require __DIR__ . '/../config/development.config.php');
-}
-
-// Run the application!
-Application::init($appConfig)->run();
+    $app->run();
+})();

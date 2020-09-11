@@ -1,15 +1,20 @@
 version: '3.1'
 services:
   app:
+    container_name: app
     build:
-      context: ./api
+      context: .
       dockerfile: Dockerfile
     ports:
       - 8080:80
     volumes:
       - ./api:/var/www/api
+      - ./docker/php_config/php.ini:/usr/local/etc/php/conf.d/php-extras.ini
+      - ./docker/apache_config/000-default.conf:/etc/apache2/sites-available/000-default.conf
+      - ./docker/log:/var/log
     restart: always
   db:
+    container_name: db
     image: postgres:11.2-alpine
     environment:
       POSTGRES_PASSWORD: <%=props.dbPassword%>

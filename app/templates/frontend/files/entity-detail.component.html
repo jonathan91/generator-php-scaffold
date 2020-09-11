@@ -1,26 +1,28 @@
 <div class="main-content">
-  <div class="container-fluid">
-      <div class="row">
-          <div class="col-md-12">
-              <div class="card">
-                  <div class="card-header card-header-primary">
-                      <h4 class="card-title"><%= className %></h4>
-                  </div>
-                  <div class="card-body">
-                      <div class="row">
-                          <% attributs.fields.forEach(function(element){ %>
-                          <div class="col-md-4">
-                              <mat-form-field class="example-full-width">
-                                  <input matInput placeholder="<%= _.upperFirst(element.fieldName) %>" [ngModel]="<%= _.toLower(className) %>.<%= element.fieldName %>" name="<%= element.fieldName %>" type="text" disabled>
-                              </mat-form-field>
-                          </div>
-                          <% }); %>
-                      </div>
-                      <button mat-raised-button type="button" class="btn btn-info pull-right" routerLink="/<%= _.toLower(className) %>">Go back</button>
-                      <div class="clearfix"></div>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-primary">
+                        <h4 class="card-title">
+                            <%= _.startCase(className) %>
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <% attributs.fields.forEach(function(element){ %>
+                                <div class="col-md-4">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput placeholder="<%= _.upperFirst(element.fieldName) %>" [ngModel]="<%= _.camelCase(className).replace(' ','') %>.<%= element.fieldName %>" name="<%= element.fieldName %>" type="text" disabled>
+                                    </mat-form-field>
+                                </div>
+                                <% }); %>
+                        </div>
+                        <button mat-raised-button type="button" class="btn btn-info pull-right" routerLink="/<%= _.kebabCase(className).toLowerCase() %>">Go back</button>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

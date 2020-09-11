@@ -14,11 +14,11 @@ import {
     MatDialogModule,
 } from '@angular/material';
 
-import { <%= className %>FormComponent } from './<%= _.toLower(className) %>-form.component';
-import { <%= className %>DetailComponent } from './<%= _.toLower(className) %>-detail.component';
-import { <%= className %>Component } from './<%= _.toLower(className) %>.component';
-import { <%= _.toLower(className) %>Route } from './<%= _.toLower(className) %>.route';
-import { <%= className %>Service } from './services/<%= _.toLower(className) %>.service';
+import { <%= _.startCase(className).replace(' ', '') %>FormComponent } from './<%= _.kebabCase(className).toLowerCase() %>-form.component';
+import { <%= _.startCase(className).replace(' ', '') %>DetailComponent } from './<%= _.kebabCase(className).toLowerCase() %>-detail.component';
+import { <%= _.startCase(className).replace(' ', '') %>Component } from './<%= _.kebabCase(className).toLowerCase() %>.component';
+import { <%= _.camelCase(className).replace(' ','') %>Route } from './<%= _.kebabCase(className).toLowerCase() %>.route';
+import { <%= _.startCase(className).replace(' ', '') %>Service } from './services/<%= _.kebabCase(className).toLowerCase() %>.service';
 
 @NgModule({
   imports: [
@@ -26,7 +26,7 @@ import { <%= className %>Service } from './services/<%= _.toLower(className) %>.
     HttpModule,
     FormsModule,
     CardModule,
-    RouterModule.forChild(<%= _.toLower(className) %>Route),
+    RouterModule.forChild(<%= _.camelCase(className).replace(' ','') %>Route),
     MatButtonModule,
     MatInputModule,
     MatRippleModule,
@@ -36,11 +36,11 @@ import { <%= className %>Service } from './services/<%= _.toLower(className) %>.
     MatDialogModule,
   ],
   declarations: [
-    <%= className %>Component,
-    <%= className %>DetailComponent,
-    <%= className %>FormComponent
+    <%= _.startCase(className).replace(' ', '') %>Component,
+    <%= _.startCase(className).replace(' ', '') %>DetailComponent,
+    <%= _.startCase(className).replace(' ', '') %>FormComponent
   ],
-  providers: [<%= className %>Service],
+  providers: [<%= _.startCase(className).replace(' ', '') %>Service],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class <%= className %>Module {}
+export class <%= _.startCase(className).replace(' ', '') %>Module {}

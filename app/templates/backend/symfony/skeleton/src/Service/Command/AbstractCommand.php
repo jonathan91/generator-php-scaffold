@@ -63,4 +63,12 @@ abstract class AbstractCommand
     {
         return $this->_data;
     }
+
+    /**
+     *
+     * @return array
+     */
+    public function toArray() {
+        return get_object_vars($this);
+    }
 }

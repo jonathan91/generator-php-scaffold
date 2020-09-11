@@ -1,17 +1,16 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Response } from '@angular/http';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { NotificationService } from 'app/shared/services/notification.service';
-import { <%= className %> } from './models/<%= _.toLower(className) %>.model';
-import { <%= className %>Service } from './services/<%= _.toLower(className) %>.service';
+import { <%= _.startCase(className).replace(' ', '') %> } from './models/<%= _.kebabCase(className).toLowerCase() %>.model';
+import { <%= _.startCase(className).replace(' ', '') %>Service } from './services/<%= _.kebabCase(className).toLowerCase() %>.service';
 
 @Component({
-  selector: 'app-<%= _.toLower(className) %>-form',
-  templateUrl: './<%= _.toLower(className) %>-form.component.html'
+  selector: 'app-<%= _.kebabCase(className).toLowerCase() %>-form',
+  templateUrl: './<%= _.kebabCase(className).toLowerCase() %>-form.component.html'
 })
-export class <%= className %>FormComponent implements OnInit, OnDestroy {
-  <%= _.toLower(className) %>: <%= className %>;
+export class <%= _.startCase(className).replace(' ', '') %>FormComponent implements OnInit, OnDestroy {
+  <%= _.camelCase(className) %>: <%= _.startCase(className).replace(' ', '') %>;
   isSaving: boolean;
   isEdit = false;
   private routeSub: Subscription;
@@ -20,17 +19,17 @@ export class <%= className %>FormComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private notification: NotificationService,
-    private <%= _.toLower(className) %>Service: <%= className %>Service,
+    private <%= _.camelCase(className) %>Service: <%= _.startCase(className).replace(' ', '') %>Service,
   ) {}
 
   ngOnInit() {
     this.isSaving = false;
     this.routeSub = this.route.params.subscribe(params => {
       let title = 'Create';
-      this.<%= _.toLower(className) %> = new <%= className %>();
+      this.<%= _.camelCase(className) %> = new <%= _.startCase(className).replace(' ', '') %>();
       if (params['id']) {
         this.isEdit = true;
-        this.<%= _.toLower(className) %>Service.find(params['id']).subscribe(<%= _.toLower(className) %> => this.<%= _.toLower(className) %> = <%= _.toLower(className) %>);
+        this.<%= _.camelCase(className) %>Service.find(params['id']).subscribe(<%= _.camelCase(className) %> => this.<%= _.camelCase(className) %> = <%= _.camelCase(className) %>);
         title = 'Edit';
       }
     });
@@ -38,21 +37,22 @@ export class <%= className %>FormComponent implements OnInit, OnDestroy {
 
   save() {
     this.isSaving = true;
-    if (this.<%= _.toLower(className) %>.id !== undefined) {
-      this.subscribeToSaveResponse(this.<%= _.toLower(className) %>Service.update(this.<%= _.toLower(className) %>));
+    if (this.<%= _.camelCase(className) %>.id !== undefined) {
+      this.subscribeToSaveResponse(this.<%= _.camelCase(className) %>Service.update(this.<%= _.camelCase(className) %>));
     } else {
-      this.subscribeToSaveResponse(this.<%= _.toLower(className) %>Service.create(this.<%= _.toLower(className) %>));
+      this.subscribeToSaveResponse(this.<%= _.camelCase(className) %>Service.create(this.<%= _.camelCase(className) %>));
     }
   }
 
-  private subscribeToSaveResponse(result: Observable<<%= className %>>) {
+  private subscribeToSaveResponse(result: Observable<<%= _.startCase(className).replace(' ', '') %>>) {
     result.subscribe(
-      (<%= _.toLower(className) %>: <%= className %>) => {
+      (<%= _.camelCase(className) %>: <%= _.startCase(className).replace(' ', '') %>) => {
       this.isSaving = false;
-      this.router.navigate(['/<%= _.toLower(className) %>']);
+      this.router.navigate(['/<%= _.kebabCase(className).toLowerCase() %>']);
       this.notification.showNotification(this.notification.msgSuccess, 'success');
     },
-    (response: Response) => {
+    (response: {error?: any}) => {
+      this.notification.showNotification(response.error.detail, 'warning');
       this.isSaving = false;
     });
   }

@@ -2,7 +2,6 @@
 This project is a code generator for the Zend Framework or Symfony, to generate the project skeleton the Resful architecture was used and the following packages are used to create the backend:
 * zend framework / Symfony
 * league / oauth2-client 2.3
-* lcobucci / jwt 3.2
 * doctrine / doctrine-module-0,10
 * doctrine / doctrine-module 1.1
 

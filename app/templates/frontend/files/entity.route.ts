@@ -1,23 +1,23 @@
 import { Routes } from '@angular/router';
-import { <%= className %>Component } from './<%= _.toLower(className) %>.component';
-import { <%= className %>DetailComponent } from './<%= _.toLower(className) %>-detail.component';
-import { <%= className %>FormComponent } from './<%= _.toLower(className) %>-form.component';
+import { <%= _.startCase(className).replace(' ', '') %>Component } from './<%= _.kebabCase(className).toLowerCase() %>.component';
+import { <%= _.startCase(className).replace(' ', '') %>DetailComponent } from './<%= _.kebabCase(className).toLowerCase() %>-detail.component';
+import { <%= _.startCase(className).replace(' ', '') %>FormComponent } from './<%= _.kebabCase(className).toLowerCase() %>-form.component';
 
-export const <%= _.toLower(className) %>Route: Routes = [
+export const <%= _.camelCase(className).replace(' ','') %>Route: Routes = [
   {
     path: '',
-    component: <%= className %>Component
+    component: <%= _.startCase(className).replace(' ', '') %>Component
   },
   {
     path: 'new',
-    component: <%= className %>FormComponent
+    component: <%= _.startCase(className).replace(' ', '') %>FormComponent
   },
   {
     path: ':id/edit',
-    component: <%= className %>FormComponent
+    component: <%= _.startCase(className).replace(' ', '') %>FormComponent
   },
   {
     path: ':id',
-    component: <%= className %>DetailComponent
+    component: <%= _.startCase(className).replace(' ', '') %>DetailComponent
   },
 ];
