@@ -31,7 +31,7 @@ class <%= _.startCase(className).replace(' ', '') %> extends AbstractEntity
     
     protected $<%= _.camelCase(element.fieldName).replace(' ','') %>;
     <% }); %>
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

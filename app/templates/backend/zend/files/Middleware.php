@@ -16,7 +16,7 @@ class <%= attributs.type %>Middleware extends AbstracMiddleware implements Reque
         $command = new <%= attributs.type %>Command();
         <% if (attributs.type === 'Put' || attributs.type === 'Post') { %>$data = json_decode($request->getBody()->getContents(), true);
         $files = $request->getUploadedFiles();
-        $command->setValues(array_merge($data, $files));
+        $command->setValues(array_merge(array_map('utf8_decode', $data), $files));
         <% } if (attributs.type !== 'Post') { %>$command->setValue('id', $request->getAttribute('id')); <% } %>
         return $this->handler->process(new <%= _.startCase(className).replace(' ', '') %>(), $command);
     }

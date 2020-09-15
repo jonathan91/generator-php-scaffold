@@ -1,9 +1,9 @@
 <?php
 namespace App\Handler;
 
-use Doctrine\ORM\EntityManager;
 use App\Command\AbstractCommand;
 use App\Entity\AbstractEntity;
+use Doctrine\ORM\EntityManager;
 use Laminas\Http\Response;
 use Zend\Diactoros\Response\JsonResponse;
 
@@ -52,8 +52,8 @@ abstract class AbstractHandler
      */
     protected function post(AbstractEntity $entity, AbstractCommand $command): JsonResponse
     {
-        $isValid = $command->validate();
         try {
+            $isValid = $command->validate();
             if($isValid) {
                 $entity->setValues($command->toArray());
                 $this->em->persist($entity);
@@ -74,12 +74,12 @@ abstract class AbstractHandler
      */
     protected function put(AbstractEntity $entity, AbstractCommand $command)
     {
-        $entity = $this->em->getRepository(get_class($entity))->find($command->id);
-        if(empty($entity)){
-            return new JsonResponse($this->message("The record with ID: {$command->id} can't identified."), Response::STATUS_CODE_400);
-        }
         try {
-        $isValid = $command->validate();
+            $entity = $this->em->getRepository(get_class($entity))->find($command->id);
+            if(empty($entity)){
+                return new JsonResponse($this->message("The record with ID: {$command->id} can't identified."), Response::STATUS_CODE_400);
+            }
+            $isValid = $command->validate();
             if($isValid) {
                 $entity->setValues($command->toArray());
                 $this->em->persist($entity);
@@ -99,19 +99,19 @@ abstract class AbstractHandler
      */
     protected function delete(AbstractEntity $entity, AbstractCommand $command)
     {
-        $isValid = $command->validate();
-        if ($isValid) {
-            $entity = $this->em->getRepository(get_class($entity))->find($command->id);
-            if (empty($entity)) {
-                return new JsonResponse($this->message("The record with ID: {$command->id} can't identified."), Response::STATUS_CODE_400);
-            }
-            try {
+        try {
+            $isValid = $command->validate();
+            if ($isValid) {
+                $entity = $this->em->getRepository(get_class($entity))->find($command->id);
+                if (empty($entity)) {
+                    return new JsonResponse($this->message("The record with ID: {$command->id} can't identified."), Response::STATUS_CODE_400);
+                }
                 $this->em->remove($entity);
                 $this->em->flush();
                 return new JsonResponse("The record with ID: {$command->id} was deleted.", Response::STATUS_CODE_200);
-            } catch (\Exception $error) {
-                return new JsonResponse($this->message($error->getMessage()), Response::STATUS_CODE_400);
             }
+        } catch (\Exception $error) {
+            return new JsonResponse($this->message($error->getMessage()), Response::STATUS_CODE_400);
         }
     }
     
