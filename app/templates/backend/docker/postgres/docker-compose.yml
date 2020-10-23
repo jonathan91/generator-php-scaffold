@@ -23,7 +23,7 @@ services:
     ports:
        - <%=props.dbPort%>:5432
     volumes:
-      - ./database/:/var/lib/postgresql
+      - ./db/pgdata:/var/lib/postgresql/data
     restart: always
 networks:
   default:
